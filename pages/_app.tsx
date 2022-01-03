@@ -1,3 +1,6 @@
+import '@fontsource/cambo'
+import '@fontsource/merriweather'
+import '@fontsource/merriweather/700.css'
 import '@fontsource/open-sans'
 import '@fontsource/open-sans/700.css'
 import '@fontsource/roboto-mono'

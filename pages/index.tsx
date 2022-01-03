@@ -1,8 +1,12 @@
 import {EntryCollection} from 'contentful'
+import Image from 'next/image'
 import Link from 'next/link'
+import Heading from '../components/heading'
 import Layout from '../components/layout'
+import Paragraph from '../components/paragraph'
 import contentfulClient from '../lib/contentful-client'
-import {Post} from '../types/post.types'
+import profilePicture from '../public/szilard-doro-profile-picture.jpg'
+import type {Post} from '../types/post.types'
 
 export type HomePageProps = {
   data?: EntryCollection<Post>
@@ -15,18 +19,27 @@ export default function Home({data}: HomePageProps) {
 
   return (
     <Layout>
-      <h1 className="text-4xl">Welcome to the blog!</h1>
+      <div className="grid">
+        <Image
+          src={profilePicture}
+          alt="Szilard Doro"
+          width={104}
+          height={104}
+          className="rounded-full"
+          layout="fixed"
+        />
+      </div>
 
       <div>
         {data.items.map(item => (
           <section key={item.sys.id}>
             <Link href={`/${item.fields.slug}/`} passHref>
-              <a>
-                <h2 className="text-3xl">{item.fields.title}</h2>
+              <a className="text-gray-900 hover:text-blue-500 active:text-blue-600 motion-safe:transition-colors focus-visible:text-blue-500 focus-visible:outline-none">
+                <Heading variant="h2">{item.fields.title}</Heading>
               </a>
             </Link>
 
-            <p>{item.fields.description}</p>
+            <Paragraph>{item.fields.description}</Paragraph>
           </section>
         ))}
       </div>

@@ -5,6 +5,7 @@ import {serialize} from 'next-mdx-remote/serialize'
 import {NextSeo} from 'next-seo'
 import Link from 'next/link'
 import {PropsWithChildren} from 'react'
+import Heading from '../components/heading'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
 import type {Post} from '../types/post.types'
@@ -36,21 +37,9 @@ export default function Post({data, error}: PostPageProps) {
       <MDXRemote
         {...data.body}
         components={{
-          h2: ({children}: PropsWithChildren<unknown>) => (
-            <h2 className="text-3xl mt-4 mb-2 font-heading font-semibold">
-              {children}
-            </h2>
-          ),
-          h3: ({children}: PropsWithChildren<unknown>) => (
-            <h3 className="text-2xl my-2 font-heading font-semibold">
-              {children}
-            </h3>
-          ),
-          h4: ({children}: PropsWithChildren<unknown>) => (
-            <h4 className="text-xl my-2 font-heading font-semibold">
-              {children}
-            </h4>
-          ),
+          h2: (props: any) => Heading({variant: `h2`, ...props}),
+          h3: (props: any) => Heading({variant: `h3`, ...props}),
+          h4: (props: any) => Heading({variant: `h4`, ...props}),
           ul: ({children}: PropsWithChildren<unknown>) => (
             <ul className="list-disc list-inside">{children}</ul>
           ),

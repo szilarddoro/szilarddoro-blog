@@ -5,8 +5,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      heading: ['"Roboto Mono"', 'serif'],
-      sans: ['"Open Sans"', 'sans-serif'],
+      heading: ['"Merriweather"', 'serif'],
+      body: ['"Cambo"', 'serif'],
     },
     extend: {},
   },
