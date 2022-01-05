@@ -1,13 +1,14 @@
-import {createClient} from 'contentful'
 import {GetStaticPropsContext} from 'next'
 import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote'
 import {serialize} from 'next-mdx-remote/serialize'
-import {NextSeo} from 'next-seo'
+import Image from 'next/image'
 import Link from 'next/link'
 import {PropsWithChildren} from 'react'
+import ArticleInfo from '../components/article-info'
 import Heading from '../components/heading'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
+import contentfulClient from '../lib/contentful-client'
 import type {Post} from '../types/post.types'
 
 type PostWithSerializedBody = Post & {
@@ -29,10 +30,27 @@ export default function Post({data, error}: PostPageProps) {
   }
 
   return (
-    <Layout>
-      <NextSeo title={data.title} titleTemplate="%s — blog.szilarddoro.com" />
+    <Layout pageTitle={data.title}>
+      <div className="mb-8 -mx-4 md:mx-0 rounded-md overflow-hidden">
+        <Image
+          src={`https:${data.heroImage.fields.file.url}`}
+          alt={data.heroImage.fields.title}
+          width={700}
+          height={366}
+          objectFit="cover"
+          layout="responsive"
+          sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1920px"
+        />
+      </div>
 
-      <h1 className="text-4xl font-heading font-bold">{data.title}</h1>
+      <Heading>{data.title}</Heading>
+
+      <ArticleInfo>
+        {[
+          new Intl.DateTimeFormat(`hu`).format(new Date(data.publishDate)),
+          data.author.fields.name,
+        ].join(` · `)}
+      </ArticleInfo>
 
       <MDXRemote
         {...data.body}
@@ -46,7 +64,9 @@ export default function Post({data, error}: PostPageProps) {
           li: ({children}: PropsWithChildren<unknown>) => (
             <li className="pl-2">{children}</li>
           ),
-          p: Paragraph,
+          p: ({children}: PropsWithChildren<unknown>) => (
+            <Paragraph className="my-4">{children}</Paragraph>
+          ),
           a: ({children, ...props}: PropsWithChildren<{href: string}>) => (
             <Link passHref {...props}>
               <a
@@ -65,16 +85,13 @@ export default function Post({data, error}: PostPageProps) {
 }
 
 export async function getStaticPaths() {
-  const client = createClient({
-    accessToken: `w7aSetSZiCarPRaXjxx7-NC37vlsB6SE6YPFa9LyAE4`,
-    space: `fbxa3p3iv97z`,
+  const data = await contentfulClient.getEntries<Post>({
+    content_type: `blogPost`,
   })
 
-  const data = await client.getEntries<Post>({content_type: `blogPost`})
-
   return {
-    paths: data.items.map(item => ({
-      params: {slug: item.fields.slug},
+    paths: data.items.map(data => ({
+      params: {slug: data.fields.slug},
     })),
     fallback: false,
   }
@@ -90,12 +107,8 @@ export async function getStaticProps({
   }
 
   try {
-    const client = createClient({
-      accessToken: `w7aSetSZiCarPRaXjxx7-NC37vlsB6SE6YPFa9LyAE4`,
-      space: `fbxa3p3iv97z`,
-    })
     const {slug} = params
-    const data = await client.getEntries<Post>({
+    const data = await contentfulClient.getEntries<Post>({
       content_type: `blogPost`,
       'fields.slug': slug,
     })

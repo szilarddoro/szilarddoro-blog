@@ -16,6 +16,12 @@ export type HeadingProps = DetailedHTMLProps<
    */
   variant?: HeadingVariant
   /**
+   * Component to be used to render the heading. By default `variant` is used to
+   * render the component, so specifying this prop overrides the default
+   * behaviour.
+   */
+  component?: React.ElementType
+  /**
    * A map of styles for different variants.
    */
   styleMap?: HeadingStyleMap
@@ -31,6 +37,7 @@ export const defaultStyleMap: HeadingStyleMap = {
 }
 
 export default function Heading({
+  component,
   variant = 'h1',
   children,
   className,
@@ -38,7 +45,7 @@ export default function Heading({
   ...props
 }: HeadingProps) {
   return createElement(
-    variant,
+    component || variant,
     {className: clsx(styleMap[variant], className), ...props},
     children,
   )

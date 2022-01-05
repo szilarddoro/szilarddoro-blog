@@ -1,11 +1,10 @@
 import {EntryCollection} from 'contentful'
-import Image from 'next/image'
 import Link from 'next/link'
-import Heading from '../components/heading'
+import ArticleInfo from '../components/article-info'
+import Heading, {defaultStyleMap} from '../components/heading'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
 import contentfulClient from '../lib/contentful-client'
-import profilePicture from '../public/szilard-doro-profile-picture.jpg'
 import type {Post} from '../types/post.types'
 
 export type HomePageProps = {
@@ -19,25 +18,31 @@ export default function Home({data}: HomePageProps) {
 
   return (
     <Layout>
-      <div className="grid">
-        <Image
-          src={profilePicture}
-          alt="Szilard Doro"
-          width={104}
-          height={104}
-          className="rounded-full"
-          layout="fixed"
-        />
-      </div>
-
-      <div>
+      <div className="grid gap-8 mt-3">
         {data.items.map(item => (
           <section key={item.sys.id}>
             <Link href={`/${item.fields.slug}/`} passHref>
               <a className="text-gray-900 hover:text-blue-500 active:text-blue-600 motion-safe:transition-colors focus-visible:text-blue-500 focus-visible:outline-none">
-                <Heading variant="h2">{item.fields.title}</Heading>
+                <Heading
+                  variant="h2"
+                  styleMap={{
+                    ...defaultStyleMap,
+                    h2: `text-3xl font-semibold font-heading`,
+                  }}
+                >
+                  {item.fields.title}
+                </Heading>
               </a>
             </Link>
+
+            <ArticleInfo>
+              {[
+                new Intl.DateTimeFormat(`hu`).format(
+                  new Date(item.fields.publishDate),
+                ),
+                item.fields.author.fields.name,
+              ].join(` · `)}
+            </ArticleInfo>
 
             <Paragraph>{item.fields.description}</Paragraph>
           </section>

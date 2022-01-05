@@ -1,3 +1,5 @@
+import {Entry} from 'contentful'
+
 export type Post = {
   id: string
   title: string
@@ -7,4 +9,5 @@ export type Post = {
   publishDate: string
   tags: Array<string>
   author: any
+  heroImage: Entry<any>
 }
