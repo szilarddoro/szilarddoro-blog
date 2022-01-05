@@ -31,7 +31,7 @@ export default function Post({data, error}: PostPageProps) {
 
   return (
     <Layout pageTitle={data.title}>
-      <div className="mb-8 -mx-4 md:mx-0 rounded-md overflow-hidden">
+      <div className="mb-8 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
         <Image
           src={`https:${data.heroImage.fields.file.url}`}
           alt={data.heroImage.fields.title}
