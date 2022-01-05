@@ -1,4 +1,5 @@
-import '@fontsource/cambo'
+import '@fontsource/bitter'
+import '@fontsource/bitter/latin-ext-400.css'
 import '@fontsource/merriweather'
 import '@fontsource/merriweather/700.css'
 import type {AppProps} from 'next/app'
@@ -13,10 +14,10 @@ export default function App({Component, pageProps}: AppProps) {
       fallbackRender={({error, resetErrorBoundary}) => {
         return (
           <div>
-            <Heading className="text-red-500">An error occurred</Heading>
+            <Heading className="text-red-500">Hiba történt</Heading>
             <Paragraph className="text-red-500">{error.message}</Paragraph>
 
-            <button onClick={resetErrorBoundary}>Try Again</button>
+            <button onClick={resetErrorBoundary}>Oldal frissítése</button>
           </div>
         )
       }}

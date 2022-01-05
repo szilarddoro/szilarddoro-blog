@@ -27,7 +27,7 @@ export default function Home({data}: HomePageProps) {
                   variant="h2"
                   styleMap={{
                     ...defaultStyleMap,
-                    h2: `text-3xl font-semibold font-heading`,
+                    h2: `text-3xl font-semibold font-heading leading-snug`,
                   }}
                 >
                   {item.fields.title}

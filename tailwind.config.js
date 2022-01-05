@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       heading: ['"Merriweather"', 'serif'],
-      body: ['"Cambo"', 'serif'],
+      body: ['"Bitter"', 'serif'],
     },
     extend: {},
   },

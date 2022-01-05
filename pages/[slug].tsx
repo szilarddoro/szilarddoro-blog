@@ -43,7 +43,7 @@ export default function Post({data, error}: PostPageProps) {
         />
       </div>
 
-      <Heading>{data.title}</Heading>
+      <Heading className="leading-snug">{data.title}</Heading>
 
       <ArticleInfo>
         {[

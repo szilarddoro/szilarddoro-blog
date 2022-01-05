@@ -12,7 +12,7 @@ export default function Paragraph({
   ...props
 }: ParagraphProps) {
   return (
-    <p className={clsx(`leading-normal`, className)} {...props}>
+    <p className={clsx(`leading-relaxed`, className)} {...props}>
       {children}
     </p>
   )

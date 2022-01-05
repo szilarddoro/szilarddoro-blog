@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource/cambo": "^4.5.0",
+    "@fontsource/bitter": "^4.5.0",
     "@fontsource/merriweather": "^4.5.3",
     "clsx": "^1.1.1",
     "next": "12.0.7",
