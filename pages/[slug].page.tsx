@@ -1,4 +1,5 @@
-import {GetStaticPropsContext} from 'next'
+import type {Entry} from 'contentful'
+import type {GetStaticPropsContext} from 'next'
 import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote'
 import {serialize} from 'next-mdx-remote/serialize'
 import Image from 'next/image'
@@ -9,51 +10,76 @@ import Heading from '../components/heading'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
 import contentfulClient from '../lib/contentful-client'
-import type {Post} from '../types/post.types'
+import type {PostModel} from '../types/post.types'
 
-type PostWithSerializedBody = Post & {
-  body: MDXRemoteSerializeResult
-}
+type PostWithSerializedBody = Entry<
+  PostModel & {
+    body: MDXRemoteSerializeResult
+  }
+>
 
 export type PostPageProps = {
-  data?: PostWithSerializedBody
+  post?: PostWithSerializedBody
   error?: string
 }
 
-export default function Post({data, error}: PostPageProps) {
+export default function Post({post, error}: PostPageProps) {
   if (error) {
-    throw error
+    throw new Error(error)
   }
 
-  if (!data) {
-    throw new Error(`Please make sure that post data is available.`)
+  if (!post) {
+    throw new Error(`Please make sure that blog post is available.`)
   }
 
   return (
-    <Layout pageTitle={data.title}>
-      <div className="mb-8 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
+    <Layout pageTitle={post.fields.title}>
+      <ArticleInfo className="grid grid-flow-col place-content-start items-center gap-2 mb-4">
         <Image
-          src={`https:${data.heroImage.fields.file.url}`}
-          alt={data.heroImage.fields.title}
+          src={`https:${post.fields.author.fields.image.fields.file.url}`}
+          alt={post.fields.author.fields.image.fields.title}
+          width={32}
+          height={32}
+          className="rounded-full"
+          layout="fixed"
+          priority
+        />
+
+        <div>
+          {[
+            post.fields.author.fields.name,
+            new Intl.DateTimeFormat(`hu`).format(
+              new Date(post.fields.publishDate),
+            ),
+          ].join(` · `)}
+          {` · `}
+          {post.fields.tags.map(tag => (
+            <Link href={`/kategoriak/${tag.sys.id}`} passHref key={tag.sys.id}>
+              <a className="hover:text-blue-500 active:text-blue-500 hover:underline">
+                {tag.name}
+              </a>
+            </Link>
+          ))}
+        </div>
+      </ArticleInfo>
+
+      <div className="mb-6 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
+        <Image
+          src={`https:${post.fields.heroImage.fields.file.url}`}
+          alt={post.fields.heroImage.fields.title}
           width={700}
           height={366}
           objectFit="cover"
           layout="responsive"
           sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1920px"
+          priority
         />
       </div>
 
-      <Heading className="leading-snug">{data.title}</Heading>
-
-      <ArticleInfo>
-        {[
-          new Intl.DateTimeFormat(`hu`).format(new Date(data.publishDate)),
-          data.author.fields.name,
-        ].join(` · `)}
-      </ArticleInfo>
+      <Heading className="leading-snug">{post.fields.title}</Heading>
 
       <MDXRemote
-        {...data.body}
+        {...post.fields.body}
         components={{
           h2: (props: any) => Heading({variant: `h2`, ...props}),
           h3: (props: any) => Heading({variant: `h3`, ...props}),
@@ -85,13 +111,13 @@ export default function Post({data, error}: PostPageProps) {
 }
 
 export async function getStaticPaths() {
-  const data = await contentfulClient.getEntries<Post>({
+  const post = await contentfulClient.getEntries<PostModel>({
     content_type: `blogPost`,
   })
 
   return {
-    paths: data.items.map(data => ({
-      params: {slug: data.fields.slug},
+    paths: post.items.map(post => ({
+      params: {slug: post.fields.slug},
     })),
     fallback: false,
   }
@@ -108,7 +134,7 @@ export async function getStaticProps({
 
   try {
     const {slug} = params
-    const data = await contentfulClient.getEntries<Post>({
+    const data = await contentfulClient.getEntries<PostModel>({
       content_type: `blogPost`,
       'fields.slug': slug,
     })
@@ -123,12 +149,19 @@ export async function getStaticProps({
     }
 
     const serializedBody = await serialize(post.fields.body)
+    const tags = await Promise.all(
+      post.metadata.tags.map(tag => contentfulClient.getTag(tag.sys.id)),
+    )
 
     return {
       props: {
-        data: {
-          ...post.fields,
-          body: serializedBody,
+        post: {
+          ...post,
+          fields: {
+            ...post.fields,
+            tags,
+            body: serializedBody,
+          },
         },
       },
     }

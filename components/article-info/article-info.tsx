@@ -14,7 +14,7 @@ export default function ArticleInfo({
   return (
     <div
       className={clsx(
-        'text-base text-gray-700 dark:text-white dark:text-opacity-70 my-2',
+        'text-base text-gray-700 dark:text-white dark:text-opacity-70',
         className,
       )}
       {...props}

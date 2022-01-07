@@ -1,13 +1,18 @@
-import {Entry} from 'contentful'
+import type {Entry, Tag} from 'contentful'
+import type {AuthorModel} from './author.types'
+import type {ImageModel} from './image.types'
 
-export type Post = {
+/**
+ * Represents a post content model.
+ */
+export type PostModel = {
   id: string
   title: string
   body: string
   slug: string
   description: string
   publishDate: string
-  tags: Array<string>
-  author: any
-  heroImage: Entry<any>
+  tags: Array<Tag>
+  author: Entry<AuthorModel>
+  heroImage: Entry<ImageModel>
 }
