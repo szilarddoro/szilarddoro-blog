@@ -1,10 +1,11 @@
-import type {Entry} from 'contentful'
+import {Entry} from 'contentful'
 import type {GetStaticPropsContext} from 'next'
 import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote'
 import {serialize} from 'next-mdx-remote/serialize'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import {PropsWithChildren} from 'react'
+import type {PropsWithChildren} from 'react'
 import ArticleInfo from '../components/article-info'
 import Heading from '../components/heading'
 import Layout from '../components/layout'
@@ -12,9 +13,13 @@ import Paragraph from '../components/paragraph'
 import contentfulClient from '../lib/contentful-client'
 import type {PostModel} from '../types/post.types'
 
+const SyntaxHighlighter = dynamic(
+  () => import(`../components/syntax-highlighter`),
+)
+
 type PostWithSerializedBody = Entry<
   PostModel & {
-    body: MDXRemoteSerializeResult
+    serializedBody: MDXRemoteSerializeResult
   }
 >
 
@@ -33,8 +38,19 @@ export default function Post({post, error}: PostPageProps) {
   }
 
   return (
-    <Layout pageTitle={post.fields.title}>
-      <ArticleInfo className="grid grid-flow-col place-content-start items-center gap-2 mb-4">
+    <Layout
+      pageTitle={post.fields.title}
+      seoProps={{
+        description: post.fields.description,
+        openGraph: {
+          images: [{url: `https:${post.fields.heroImage.fields.file.url}`}],
+        },
+      }}
+    >
+      <ArticleInfo
+        className="grid grid-flow-col place-content-start items-center gap-2 mb-4"
+        post={post.fields}
+      >
         <Image
           src={`https:${post.fields.author.fields.image.fields.file.url}`}
           alt={post.fields.author.fields.image.fields.title}
@@ -44,23 +60,6 @@ export default function Post({post, error}: PostPageProps) {
           layout="fixed"
           priority
         />
-
-        <div>
-          {[
-            post.fields.author.fields.name,
-            new Intl.DateTimeFormat(`hu`).format(
-              new Date(post.fields.publishDate),
-            ),
-          ].join(` · `)}
-          {` · `}
-          {post.fields.tags.map(tag => (
-            <Link href={`/kategoriak/${tag.sys.id}`} passHref key={tag.sys.id}>
-              <a className="hover:text-blue-500 active:text-blue-500 hover:underline">
-                {tag.name}
-              </a>
-            </Link>
-          ))}
-        </div>
       </ArticleInfo>
 
       <div className="mb-6 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
@@ -71,7 +70,7 @@ export default function Post({post, error}: PostPageProps) {
           height={366}
           objectFit="cover"
           layout="responsive"
-          sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, (max-width: 1200px) 1200px, 1920px"
+          sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
           priority
         />
       </div>
@@ -79,7 +78,7 @@ export default function Post({post, error}: PostPageProps) {
       <Heading className="leading-snug">{post.fields.title}</Heading>
 
       <MDXRemote
-        {...post.fields.body}
+        {...post.fields.serializedBody}
         components={{
           h2: (props: any) => Heading({variant: `h2`, ...props}),
           h3: (props: any) => Heading({variant: `h3`, ...props}),
@@ -98,12 +97,22 @@ export default function Post({post, error}: PostPageProps) {
               <a
                 target={props.href.startsWith(`/`) ? '_self' : '_blank'}
                 rel={props.href.startsWith(`/`) ? '' : 'noopener noreferrer'}
-                className="text-blue-500 hover:underline"
+                className="text-blue-500 hover:underline border-b-"
               >
                 {children}
               </a>
             </Link>
           ),
+          pre: ({children}: PropsWithChildren<any>) => {
+            return (
+              <SyntaxHighlighter
+                showLineNumbers
+                language={children.props.className.replace(/language\-/i, '')}
+              >
+                {children.props.children}
+              </SyntaxHighlighter>
+            )
+          },
         }}
       />
     </Layout>
@@ -160,7 +169,7 @@ export async function getStaticProps({
           fields: {
             ...post.fields,
             tags,
-            body: serializedBody,
+            serializedBody,
           },
         },
       },

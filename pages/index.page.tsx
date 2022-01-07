@@ -22,12 +22,12 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
   return (
     <Layout className="grid">
       {primaryAuthor && (
-        <div className="grid grid-flow-col justify-self-start items-center gap-3 mt-3 mb-6">
+        <div className="grid grid-flow-col justify-self-start items-center gap-3 mb-4">
           <Image
             src={`https:${primaryAuthor.fields.image.fields.file.url}`}
             alt={primaryAuthor.fields.image.fields.title}
-            width={56}
-            height={56}
+            width={52}
+            height={52}
             className="rounded-full"
             layout="fixed"
             priority
@@ -63,23 +63,7 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
               </a>
             </Link>
 
-            <ArticleInfo className="my-2">
-              {new Intl.DateTimeFormat(`hu`).format(
-                new Date(post.fields.publishDate),
-              )}
-              {` · `}
-              {post.fields.tags.map(tag => (
-                <Link
-                  href={`/kategoriak/${tag.sys.id}`}
-                  passHref
-                  key={tag.sys.id}
-                >
-                  <a className="hover:text-blue-500 active:text-blue-500 hover:underline">
-                    {tag.name}
-                  </a>
-                </Link>
-              ))}
-            </ArticleInfo>
+            <ArticleInfo className="mt-2" post={post.fields} />
           </section>
         ))}
       </div>

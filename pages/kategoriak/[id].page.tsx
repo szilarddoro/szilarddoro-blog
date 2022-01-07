@@ -28,9 +28,9 @@ export default function CategoryList({
   }
 
   return (
-    <Layout>
+    <Layout pageTitle={tag.name}>
       <Heading variant="h2" component="h1" className="mb-6">
-        📁 {tag.name}
+        🗂️ {tag.name}
       </Heading>
 
       <div className="grid gap-6 mt-4">
@@ -54,23 +54,7 @@ export default function CategoryList({
               </a>
             </Link>
 
-            <ArticleInfo>
-              {new Intl.DateTimeFormat(`hu`).format(
-                new Date(post.fields.publishDate),
-              )}
-              {` · `}
-              {post.fields.tags.map(tag => (
-                <Link
-                  href={`/kategoriak/${tag.sys.id}`}
-                  passHref
-                  key={tag.sys.id}
-                >
-                  <a className="hover:text-blue-500 active:text-blue-500 hover:underline">
-                    {tag.name}
-                  </a>
-                </Link>
-              ))}
-            </ArticleInfo>
+            <ArticleInfo post={post.fields} />
           </section>
         ))}
       </div>
