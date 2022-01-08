@@ -40,7 +40,7 @@ export default function Layout({
 
   return (
     <div
-      className={clsx(`grid content-between min-h-screen`, wrapperClassName)}
+      className={clsx(`relative min-h-screen pb-12`, wrapperClassName)}
       {...props}
     >
       <NextSeo
@@ -50,23 +50,23 @@ export default function Layout({
         {...seoProps}
       />
 
-      <div>
-        <header className="py-2 md:py-4">
-          <Container className="grid gap-6">
-            <Link href="/" passHref>
-              <a className="my-3 justify-self-start hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
-                <Heading component="span" variant="h2">
-                  {siteName}
-                </Heading>
-              </a>
-            </Link>
-          </Container>
-        </header>
+      <header className="py-2 md:py-4">
+        <Container className="grid gap-6">
+          <Link href="/" passHref>
+            <a className="my-3 justify-self-start hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
+              <Heading component="span" variant="h2">
+                {siteName}
+              </Heading>
+            </a>
+          </Link>
+        </Container>
+      </header>
 
-        <Container className={clsx('pb-24', className)}>{children}</Container>
-      </div>
+      <Container component="main" className={clsx(`pb-12`, className)}>
+        {children}
+      </Container>
 
-      <footer className="py-4">
+      <footer className="py-6 absolute bottom-0 w-full">
         <Container className="grid grid-flow-col items-center justify-between text-base">
           <div className="grid grid-flow-col gap-2">
             <Link href="https://github.com/szilarddoro" passHref>
