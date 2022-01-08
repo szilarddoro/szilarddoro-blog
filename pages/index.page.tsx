@@ -28,6 +28,8 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
       seoProps={{
         description: `A személyes blogom, ahol olyan dolgokról írok vegyes témában, amiket érdekesnek vagy említésre méltónak találok. Nézz be hozzám, hátha találsz valami érdekeset.`,
         openGraph: {
+          locale: `hu_HU`,
+          url: `https://szilarddoro.com`,
           type: `website`,
           images: [
             {
