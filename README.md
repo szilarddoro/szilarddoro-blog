@@ -8,19 +8,23 @@ Feel free to fork the repository or contribute via
 
 ## Dependencies
 
-- [Contentful](https://contentful.com) - This is for managing your content on an easy to use platform.
-- [Cloudinary](https://cloudinary.com) - This is for storing and optimizing your images on the fly.
-- [Vercel](https://vercel.com) or [Netlify](https://netlify.com) or any other hosting platform. It's a simply Next app, you can deploy it anywhere.
+- [Contentful](https://contentful.com) - This is for managing your content on an
+  easy to use platform.
+- [Cloudinary](https://cloudinary.com) - This is for storing and optimizing your
+  images on the fly.
+- [Vercel](https://vercel.com) or [Netlify](https://netlify.com) or any other
+  hosting platform. It's a simply Next app, you can deploy it anywhere.
 
 ## Configuring the environment
 
-| Environment variable                | Type      | Description                                                                                                   |
-| ----------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| **CONTENTFUL_ACCESS_TOKEN**         | `string`  | Contentful's Content Delivery API access token                                                                |
-| **CONTENTFUL_PREVIEW_ACCESS_TOKEN** | `string`  | Contentful's Content Preview API access token                                                                 |
-| **CONTENTFUL_SPACE_ID**             | `string`  | Identifier of your Contentful's space                                                                         |
-| **PRIMARY_AUTHOR_ID**               | `string`  | Entry identifier of the primary author, you can omit if you don't wish to display any author on the home page |
-| **PREVIEW**                         | `boolean` | Whether or not the page should use the Preview API                                                            |
+| Environment variable                | Type                 | Description                                                                                                   |
+| ----------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **CONTENTFUL_ACCESS_TOKEN**         | `string`             | Contentful's Content Delivery API access token                                                                |
+| **CONTENTFUL_PREVIEW_ACCESS_TOKEN** | `string`             | Contentful's Content Preview API access token                                                                 |
+| **CONTENTFUL_SPACE_ID**             | `string`             | Identifier of your Contentful's space                                                                         |
+| **SITE_CONFIGURATION_ID**           | `string`             | Entry identifier of the main site configuration object on Contentful                                          |
+| **PRIMARY_AUTHOR_ID**               | `string` (optional)  | Entry identifier of the primary author, you can omit if you don't wish to display any author on the home page |
+| **PREVIEW**                         | `boolean` (optional) | Whether or not the page should use the Preview API                                                            |
 
 You can create an `.env.local` file or set these environment variables on the
 platform you are building and hosting your blog.
@@ -49,33 +53,47 @@ how your site will look like once deployed.
 
 ## Deploy the blog
 
-There are several platforms that are an awesome choice for hosting your blog such as [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
+There are several platforms that are an awesome choice for hosting your blog
+such as [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
 
 My own blog runs on [Vercel](https://vercel.com).
 
 ## Content models
 
 This blog uses very few content models to let you create your blog posts as fast
-as possible.
+as possible. Below you can find the relevant fields.
 
-Below you can find the relevant fields.
+### Site Configuration
+
+Represents a site configuration object. There are additional fields returned by
+Contentful. Check out the
+[official Github repository](https://github.com/contentful/contentful.js) to
+learn more.
+
+| Field          | Type     | Description                               |
+| -------------- | -------- | ----------------------------------------- |
+| title          | `string` | Title of your blog                        |
+| description    | `string` | Default meta description of your blog     |
+| openGraphImage | `string` | Default Open Graph image URL of your blog |
+| siteUrl        | `string` | The URL where your blog is deployed       |
 
 ### Cloudinary Image
 
 Represents an image. The return value is managed by
 [Cloudinary's](http://cloudinary.com) Contentful integration.
 
-| Field        | Type                                           | Description                                                                      |
-| ------------ | ---------------------------------------------- | -------------------------------------------------------------------------------- |
-| secure_url   | `string`                                       | Secure URL for fetching the image                                                |
-| context      | `{ custom: { alt: string; caption: string } }` | Image metadata used for SEO purposes                                             |
-| relative_url | `string`                                       | A relative URL for displaying the image. Used by Next Image's Cloudinary loader. |
+| Field        | Type     | Description                                                                      |
+| ------------ | -------- | -------------------------------------------------------------------------------- |
+| secure_url   | `string` | Secure URL for fetching the image                                                |
+| context      | `object` | Image metadata used for SEO purposes                                             |
+| relative_url | `string` | A relative URL for displaying the image. Used by Next Image's Cloudinary loader. |
 
 ### Author
 
 Represents an author. There are additional fields returned by Contentful. Check
-out the [official Github repository](https://github.com/contentful/contentful.js)
-to learn more.
+out the
+[official Github repository](https://github.com/contentful/contentful.js) to
+learn more.
 
 | Field    | Type              | Description                   |
 | -------- | ----------------- | ----------------------------- |
