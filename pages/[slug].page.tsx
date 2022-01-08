@@ -33,6 +33,8 @@ export default function Post({post, error}: PostPageProps) {
     throw new Error(`Please make sure that blog post is available.`)
   }
 
+  console.log(post.fields.heroImage)
+
   return (
     <Layout
       pageTitle={post.fields.title}
@@ -45,6 +47,7 @@ export default function Post({post, error}: PostPageProps) {
             publishedTime: post.sys.createdAt,
             modifiedTime: post.sys.updatedAt,
             authors: [post.fields.author.fields.name],
+            tags: post.fields.tags.map(tag => tag.name),
           },
           url: `https://szilarddoro.com/${post.fields.slug}`,
           images: [{url: post.fields.heroImage.secure_url}],

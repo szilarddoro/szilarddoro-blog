@@ -23,7 +23,20 @@ export type HomePageProps = {
 
 export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
   return (
-    <Layout className="grid">
+    <Layout
+      className="grid"
+      seoProps={{
+        description: `A személyes blogom, ahol olyan dolgokról írok vegyes témában, amiket érdekesnek vagy említésre méltónak találok. Nézz be hozzám, hátha találsz valami érdekeset.`,
+        openGraph: {
+          type: `website`,
+          images: [
+            {
+              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641653978/szilards-scrapyard-cover_xxebuq.jpg`,
+            },
+          ],
+        },
+      }}
+    >
       {primaryAuthor && (
         <div className="grid grid-flow-col justify-self-start items-center gap-3 mt-2 mb-4">
           <Image

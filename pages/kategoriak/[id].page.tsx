@@ -30,7 +30,20 @@ export default function CategoryList({
   }
 
   return (
-    <Layout pageTitle={tag.name}>
+    <Layout
+      pageTitle={tag.name}
+      seoProps={{
+        description: `A személyes blogom, ahol olyan dolgokról írok vegyes témában, amiket érdekesnek vagy említésre méltónak találok. Nézz be hozzám, hátha találsz valami érdekeset.`,
+        openGraph: {
+          type: `website`,
+          images: [
+            {
+              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641653978/szilards-scrapyard-cover_xxebuq.jpg`,
+            },
+          ],
+        },
+      }}
+    >
       <Heading variant="h4" component="h1" className="mb-4 text-slate-700">
         🗂️ Kategóriák / {tag.name}
       </Heading>
