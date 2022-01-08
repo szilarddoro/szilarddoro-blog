@@ -39,6 +39,14 @@ export default function Post({post, error}: PostPageProps) {
       seoProps={{
         description: post.fields.description,
         openGraph: {
+          locale: 'hu_HU',
+          type: `article`,
+          article: {
+            publishedTime: post.sys.createdAt,
+            modifiedTime: post.sys.updatedAt,
+            authors: [post.fields.author.fields.name],
+          },
+          url: `https://szilarddoro.com/${post.fields.slug}`,
           images: [{url: post.fields.heroImage.relative_url}],
         },
       }}
@@ -59,19 +67,19 @@ export default function Post({post, error}: PostPageProps) {
       </ArticleInfo>
 
       {post.fields.heroImage.relative_url && (
-        <div className="mb-6 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
-          <ImageWithCaption
-            src={post.fields.heroImage.relative_url}
-            alt={post.fields.heroImage.context.custom.alt}
-            caption={post.fields.heroImage.context.custom.caption}
-            width={post.fields.heroImage.width}
-            height={post.fields.heroImage.height}
-            objectFit="cover"
-            layout="responsive"
-            sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
-            priority
-          />
-        </div>
+        <ImageWithCaption
+          wrapperClassName="mb-6"
+          imageWrapperClassName="-mx-4 md:mx-0 md:rounded-md overflow-hidden"
+          src={post.fields.heroImage.relative_url}
+          alt={post.fields.heroImage.context.custom.alt}
+          caption={post.fields.heroImage.context.custom.caption}
+          width={post.fields.heroImage.width}
+          height={post.fields.heroImage.height}
+          objectFit="cover"
+          layout="responsive"
+          sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
+          priority
+        />
       )}
 
       <Heading className="leading-snug">{post.fields.title}</Heading>
@@ -79,6 +87,7 @@ export default function Post({post, error}: PostPageProps) {
       <MDXRemote
         {...post.fields.body}
         components={{
+          // todo: convert content to ID and make H2 linkable
           h2: (props: any) => Heading({variant: `h2`, ...props}),
           h3: (props: any) => Heading({variant: `h3`, ...props}),
           h4: (props: any) => Heading({variant: `h4`, ...props}),
@@ -96,7 +105,7 @@ export default function Post({post, error}: PostPageProps) {
               <a
                 target={props.href.startsWith(`/`) ? '_self' : '_blank'}
                 rel={props.href.startsWith(`/`) ? '' : 'noopener noreferrer'}
-                className="text-green-500 hover:underline"
+                className="text-emerald-500 hover:underline"
               >
                 {children}
               </a>
@@ -112,6 +121,7 @@ export default function Post({post, error}: PostPageProps) {
           ),
           img: ({src, alt, width, height, caption}: any) => (
             <ImageWithCaption
+              imageWrapperClassName="-mx-4 md:mx-0 md:rounded-md overflow-hidden"
               src={src.replace(
                 /https:\/\/res\.cloudinary\.com\/dtfzsgeku\/image\/upload\/v\d+/i,
                 ``,

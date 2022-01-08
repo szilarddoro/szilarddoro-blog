@@ -22,10 +22,6 @@ export type HomePageProps = {
 }
 
 export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
-  if (!blogPosts || !blogPosts.items) {
-    throw new Error(`Blog posts could not be loaded.`)
-  }
-
   return (
     <Layout className="grid">
       {primaryAuthor && (
@@ -52,29 +48,34 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
       )}
 
       <div className="grid gap-6 mt-2">
-        {blogPosts.items.map(post => (
-          <section key={post.sys.id}>
-            <Link href={`/${post.fields.slug}/`} passHref>
-              <a className="text-gray-900 dark:text-white hover:text-green-500 active:text-green-600 focus-visible:text-green-500 focus-visible:outline-none motion-safe:transition-colors">
-                <Heading
-                  variant="h2"
-                  styleMap={{
-                    ...defaultStyleMap,
-                    h2: `text-3xl font-semibold font-heading leading-snug my-2`,
-                  }}
-                >
-                  {post.fields.title}
-                </Heading>
+        {(!blogPosts || !blogPosts.items) && (
+          <span>Sajnos egyelőre még egy poszt sem került fel az oldalra.</span>
+        )}
 
-                <Paragraph className="text-gray-900 dark:text-white">
-                  {post.fields.description}
-                </Paragraph>
-              </a>
-            </Link>
+        {blogPosts &&
+          blogPosts.items.map(post => (
+            <section key={post.sys.id}>
+              <Link href={`/${post.fields.slug}/`} passHref>
+                <a className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 focus-visible:text-emerald-500 focus-visible:outline-none motion-safe:transition-colors">
+                  <Heading
+                    variant="h2"
+                    styleMap={{
+                      ...defaultStyleMap,
+                      h2: `text-3xl font-semibold font-heading leading-snug my-2`,
+                    }}
+                  >
+                    {post.fields.title}
+                  </Heading>
 
-            <ArticleInfo className="mt-2" post={post.fields} />
-          </section>
-        ))}
+                  <Paragraph className="text-gray-900 dark:text-white">
+                    {post.fields.description}
+                  </Paragraph>
+                </a>
+              </Link>
+
+              <ArticleInfo className="mt-2" post={post.fields} />
+            </section>
+          ))}
       </div>
     </Layout>
   )

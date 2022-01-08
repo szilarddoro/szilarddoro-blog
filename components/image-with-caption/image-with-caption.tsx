@@ -11,22 +11,29 @@ export type ImageWithCaptionProps = ImageProps & {
    */
   captionClassName?: string
   /**
-   * Class name applied to the image wrapper.
+   * Class name applied to the image and caption wrapper.
    */
   wrapperClassName?: string
+  /**
+   * Class name applied to the image wrapper.
+   */
+  imageWrapperClassName?: string
 }
 
 export default function ImageWithCaption({
   caption,
   captionClassName,
   wrapperClassName,
+  imageWrapperClassName,
   src,
   alt,
   ...props
 }: ImageWithCaptionProps) {
   return (
     <div className={clsx(`grid gap-2`, wrapperClassName)}>
-      <Image src={src} alt={alt} {...props} />
+      <div className={imageWrapperClassName}>
+        <Image src={src} alt={alt} {...props} />
+      </div>
 
       {caption && (
         <figcaption

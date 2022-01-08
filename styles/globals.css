@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+pre {
+  border-radius: 6px;
+  margin: .5em;
+  font-size: 0.85rem !important;
+}
+
+@media screen and (min-width: 768px) {
+  pre {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  pre {
+    font-size: 0.95rem !important;
+  }
+}

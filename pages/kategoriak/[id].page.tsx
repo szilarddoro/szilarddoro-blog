@@ -31,7 +31,7 @@ export default function CategoryList({
 
   return (
     <Layout pageTitle={tag.name}>
-      <Heading variant="h4" component="h1" className="mb-4 text-gray-600">
+      <Heading variant="h4" component="h1" className="mb-4 text-slate-700">
         🗂️ Kategóriák / {tag.name}
       </Heading>
 
@@ -39,7 +39,7 @@ export default function CategoryList({
         {blogPosts.items.map(post => (
           <section key={post.sys.id}>
             <Link href={`/${post.fields.slug}/`} passHref>
-              <a className="text-gray-900 dark:text-white hover:text-green-500 active:text-green-600 motion-safe:transition-colors focus-visible:text-green-500 focus-visible:outline-none">
+              <a className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
                 <Heading
                   variant="h2"
                   styleMap={{

@@ -5,11 +5,16 @@ import '@fontsource/bitter/latin-ext-600.css'
 import '@fontsource/merriweather'
 import '@fontsource/merriweather/700.css'
 import type {AppProps} from 'next/app'
+import dynamic from 'next/dynamic'
 import {ErrorBoundary} from 'react-error-boundary'
 import Button from '../components/button'
 import Heading from '../components/heading'
 import Paragraph from '../components/paragraph'
 import '../styles/globals.css'
+
+const ProgressBar = dynamic(() => import('../components/progress-bar'), {
+  ssr: false,
+})
 
 export default function App({Component, pageProps}: AppProps) {
   return (
@@ -28,6 +33,12 @@ export default function App({Component, pageProps}: AppProps) {
         </div>
       )}
     >
+      <ProgressBar
+        color="#64748b"
+        height={3}
+        startPosition={0.3}
+        options={{showSpinner: false}}
+      />
       <Component {...pageProps} />
     </ErrorBoundary>
   )
