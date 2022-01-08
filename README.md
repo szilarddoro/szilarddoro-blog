@@ -1,7 +1,7 @@
-# Szilard's Scrapyard
+# szilarddoro.com
 
-This is a Next.js application powering my personal blog. Contentful's Preview
-and Content Delivery APIs are acting as a backend in the background.
+This is the Next.js application powering my personal blog. Contentful's Preview
+and Content Delivery APIs are providing the content.
 
 Feel free to fork the repository or contribute via
 [pull requests](https://github.com/szilarddoro/szilarddoro-blog/pulls).
