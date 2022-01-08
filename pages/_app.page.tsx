@@ -21,8 +21,12 @@ export default function App({Component, pageProps}: AppProps) {
     <ErrorBoundary
       fallbackRender={({error, resetErrorBoundary}) => (
         <div className="grid gap-2 justify-items-center container max-w-3xl mx-auto px-4 py-4">
-          <Heading className="text-gray-900">Hiba történt</Heading>
-          <Paragraph className="text-gray-900">{error.message}</Paragraph>
+          <Heading className="text-gray-900 dark:text-white">
+            Hiba történt
+          </Heading>
+          <Paragraph className="text-gray-900 dark:text-white">
+            {error.message}
+          </Paragraph>
 
           <Button
             className="bg-red-500 hover:bg-red-600 active:bg-red-700 motion-safe:transition-colors text-white py-2 px-4 rounded-md font-semibold"

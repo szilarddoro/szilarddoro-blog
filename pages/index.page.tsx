@@ -8,9 +8,17 @@ import contentfulClient from '../lib/contentful-client'
 import convertPost from '../lib/convert-post'
 import getAuthorWithRelativeImage from '../lib/get-author-with-relative-image'
 import type {AuthorModel, ConvertedAuthor} from '../types/author.types'
+import type {
+  ConfigurationModel,
+  ConvertedConfiguration,
+} from '../types/configuration.types'
 import type {ConvertedPostCollection, PostModel} from '../types/post.types'
 
 export type HomePageProps = {
+  /**
+   * Site configuration.
+   */
+  siteConfiguration?: ConvertedConfiguration
   /**
    * A collection of blog posts.
    */
@@ -21,19 +29,30 @@ export type HomePageProps = {
   primaryAuthor?: ConvertedAuthor
 }
 
-export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
+export default function Home({
+  siteConfiguration,
+  blogPosts,
+  primaryAuthor,
+}: HomePageProps) {
+  if (!siteConfiguration) {
+    throw new Error(
+      `Site configuration is not available. Make sure you set up Contentful and your environment variables correctly.`,
+    )
+  }
+
   return (
     <Layout
+      siteName={siteConfiguration.fields.title}
       className="grid"
       seoProps={{
-        description: `A személyes blogom, ahol olyan dolgokról írok vegyes témában, amiket érdekesnek vagy említésre méltónak találok. Nézz be hozzám, hátha találsz valami érdekeset.`,
+        description: siteConfiguration.fields.description,
         openGraph: {
-          locale: `hu_HU`,
-          url: `https://szilarddoro.com`,
+          locale: siteConfiguration.sys.locale,
+          url: siteConfiguration.fields.siteUrl,
           type: `website`,
           images: [
             {
-              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641654346/szilards-scrapyard-cover_flneqs.jpg`,
+              url: siteConfiguration.fields.openGraphImage,
             },
           ],
         },
@@ -124,8 +143,19 @@ export async function getStaticProps() {
     }
   }
 
+  const siteConfigurationId = process.env.SITE_CONFIGURATION_ID
+
+  let siteConfiguration: ConvertedConfiguration | null = null
+
+  if (siteConfigurationId) {
+    siteConfiguration = await contentfulClient.getEntry<ConfigurationModel>(
+      siteConfigurationId,
+    )
+  }
+
   return {
     props: {
+      siteConfiguration,
       blogPosts,
       primaryAuthor,
     },

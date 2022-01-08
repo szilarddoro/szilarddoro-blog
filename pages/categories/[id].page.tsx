@@ -7,16 +7,34 @@ import Layout from '../../components/layout'
 import Paragraph from '../../components/paragraph'
 import contentfulClient from '../../lib/contentful-client'
 import convertPost from '../../lib/convert-post'
+import {
+  ConfigurationModel,
+  ConvertedConfiguration,
+} from '../../types/configuration.types'
 import {CloudinaryImageModel} from '../../types/image.types'
 import type {ConvertedPostCollection, PostModel} from '../../types/post.types'
 
 export type CategoryListPageProps = {
+  /**
+   * Tag used to open the page.
+   */
   tag: Tag
+  /**
+   * Site configuration.
+   */
+  siteConfiguration?: ConvertedConfiguration
+  /**
+   * A collection of blog posts.
+   */
   blogPosts?: EntryCollection<PostModel<CloudinaryImageModel>>
+  /**
+   * Error message.
+   */
   error?: string
 }
 
 export default function CategoryList({
+  siteConfiguration,
   blogPosts,
   tag,
   error,
@@ -25,29 +43,39 @@ export default function CategoryList({
     throw new Error(error)
   }
 
+  if (!siteConfiguration) {
+    throw new Error(
+      `Site configuration is not available. Make sure you set up Contentful and your environment variables correctly.`,
+    )
+  }
+
   if (!blogPosts || !blogPosts.items) {
     throw new Error(`Blog posts could not be loaded.`)
   }
 
   return (
     <Layout
-      pageTitle={tag.name}
+      siteName={siteConfiguration.fields.title}
+      pageTitle={`Kategóriák / ${tag.name}`}
       seoProps={{
-        description: `A személyes blogom, ahol olyan dolgokról írok vegyes témában, amiket érdekesnek vagy említésre méltónak találok. Nézz be hozzám, hátha találsz valami érdekeset.`,
+        description: siteConfiguration.fields.description,
         openGraph: {
-          locale: `hu_HU`,
-          url: `https://szilarddoro.com/kategoriak/${tag.sys.id}`,
+          locale: siteConfiguration.sys.locale,
+          url: `${siteConfiguration.fields.siteUrl}/categories/${tag.sys.id}`,
           type: `website`,
           images: [
             {
-              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641654346/szilards-scrapyard-cover_flneqs.jpg`,
+              url: siteConfiguration.fields.openGraphImage,
             },
           ],
         },
       }}
     >
-      <Heading variant="h4" component="h1" className="mb-4 text-slate-700">
-        🗂️ Kategóriák / {tag.name}
+      <Heading variant="h4" component="h1" className="mb-4">
+        🗂️{' '}
+        <span className="inline-block ml-0.5 text-slate-700 dark:text-white dark:text-opacity-50">
+          Kategóriák / {tag.name}
+        </span>
       </Heading>
 
       <div className="grid gap-6 mt-4">
@@ -71,7 +99,7 @@ export default function CategoryList({
               </a>
             </Link>
 
-            <ArticleInfo post={post.fields} />
+            <ArticleInfo className="mt-2" post={post.fields} />
           </section>
         ))}
       </div>
@@ -116,8 +144,19 @@ export async function getStaticProps({
       items: convertedBlogPosts,
     }
 
+    const siteConfigurationId = process.env.SITE_CONFIGURATION_ID
+
+    let siteConfiguration: ConvertedConfiguration | null = null
+
+    if (siteConfigurationId) {
+      siteConfiguration = await contentfulClient.getEntry<ConfigurationModel>(
+        siteConfigurationId,
+      )
+    }
+
     return {
       props: {
+        siteConfiguration,
         blogPosts,
         tag,
       },

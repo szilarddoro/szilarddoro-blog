@@ -9,6 +9,10 @@ export type LayoutProps = DetailedHTMLProps<
   HTMLDivElement
 > & {
   /**
+   * Name of the site.
+   */
+  siteName: string
+  /**
    * Title of the page.
    */
   pageTitle?: string
@@ -24,6 +28,7 @@ export type LayoutProps = DetailedHTMLProps<
 
 export default function Layout({
   pageTitle,
+  siteName,
   children,
   className,
   wrapperClassName,
@@ -35,11 +40,9 @@ export default function Layout({
   return (
     <div className={clsx(`pb-24`, wrapperClassName)} {...props}>
       <NextSeo
-        defaultTitle="Szilard's Scrapyard"
-        title={pageTitle || `Szilard's Scrapyard`}
-        titleTemplate={
-          hasTitle ? `%s — Szilard's Scrapyard` : `Szilard's Scrapyard`
-        }
+        defaultTitle={siteName}
+        title={pageTitle || siteName}
+        titleTemplate={hasTitle ? `%s — ${siteName}` : `${siteName}`}
         {...seoProps}
       />
 
@@ -48,18 +51,18 @@ export default function Layout({
           <Link href="/" passHref>
             <a className="my-3 justify-self-start hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
               <Heading component="span" variant="h2">
-                Szilard&apos;s Scrapyard
+                {siteName}
               </Heading>
             </a>
           </Link>
         </div>
       </header>
 
-      <article
+      <main
         className={clsx('container max-w-3xl mx-auto px-4 md:px-6', className)}
       >
         {children}
-      </article>
+      </main>
     </div>
   )
 }

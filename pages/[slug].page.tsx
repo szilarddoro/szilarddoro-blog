@@ -11,9 +11,17 @@ import Paragraph from '../components/paragraph'
 import SyntaxHighlighter from '../components/syntax-highlighter'
 import contentfulClient from '../lib/contentful-client'
 import convertPost from '../lib/convert-post'
+import type {
+  ConfigurationModel,
+  ConvertedConfiguration,
+} from '../types/configuration.types'
 import type {ConvertedPost, PostModel} from '../types/post.types'
 
 export type PostPageProps = {
+  /**
+   * Site configuration.
+   */
+  siteConfiguration?: ConvertedConfiguration
   /**
    * A post from Contentful.
    */
@@ -24,9 +32,15 @@ export type PostPageProps = {
   error?: string
 }
 
-export default function Post({post, error}: PostPageProps) {
+export default function Post({siteConfiguration, post, error}: PostPageProps) {
   if (error) {
     throw new Error(error)
+  }
+
+  if (!siteConfiguration) {
+    throw new Error(
+      `Site configuration is not available. Make sure you set up Contentful and your environment variables correctly.`,
+    )
   }
 
   if (!post) {
@@ -35,11 +49,12 @@ export default function Post({post, error}: PostPageProps) {
 
   return (
     <Layout
+      siteName={siteConfiguration.fields.title}
       pageTitle={post.fields.title}
       seoProps={{
         description: post.fields.description,
         openGraph: {
-          locale: 'hu_HU',
+          locale: post.sys.locale,
           type: `article`,
           article: {
             publishedTime: post.sys.createdAt,
@@ -47,7 +62,9 @@ export default function Post({post, error}: PostPageProps) {
             authors: [post.fields.author.fields.name],
             tags: post.fields.tags.map(tag => tag.name),
           },
-          url: `https://szilarddoro.com/${post.fields.slug}`,
+          url: `${siteConfiguration.fields.siteUrl.replace(/\/$/i, '')}/${
+            post.fields.slug
+          }`,
           images: [{url: post.fields.heroImage.secure_url}],
         },
       }}
@@ -174,9 +191,22 @@ export async function getStaticProps({
 
     const post = await convertPost(rawPost)
 
+    const siteConfigurationId = process.env.SITE_CONFIGURATION_ID
+
+    let siteConfiguration: ConvertedConfiguration | null = null
+
+    if (siteConfigurationId) {
+      siteConfiguration = await contentfulClient.getEntry<ConfigurationModel>(
+        siteConfigurationId,
+      )
+    }
+
+    console.log(siteConfiguration)
+
     return {
       props: {
         post,
+        siteConfiguration,
       },
     }
   } catch (error) {

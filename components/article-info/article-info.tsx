@@ -37,7 +37,7 @@ export default function ArticleInfo<TBody>({
         <div className="inline-grid grid-flow-col gap-2">
           {post.tags.map(tag => (
             <Link
-              href={`/kategoriak/${tag.sys.id}`}
+              href={`/categories/${tag.sys.id}`}
               passHref
               key={tag.sys.id}
               prefetch={false}
