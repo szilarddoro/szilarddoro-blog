@@ -31,7 +31,7 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
           type: `website`,
           images: [
             {
-              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641653978/szilards-scrapyard-cover_xxebuq.jpg`,
+              url: `https://res.cloudinary.com/dtfzsgeku/image/upload/v1641654346/szilards-scrapyard-cover_flneqs.jpg`,
             },
           ],
         },
