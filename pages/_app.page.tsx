@@ -34,7 +34,7 @@ export default function App({Component, pageProps}: AppProps) {
       )}
     >
       <ProgressBar
-        color="#64748b"
+        color="#10b981"
         height={3}
         startPosition={0.3}
         options={{showSpinner: false}}

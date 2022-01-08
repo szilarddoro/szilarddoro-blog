@@ -1,5 +1,5 @@
 /**
- * Represents an image content model for Cloudinary images.
+ * Represents an image content model of Cloudinary images.
  */
 export type CloudinaryImageModel = {
   url: string

@@ -15,4 +15,7 @@ export type AuthorModel<TImage = Array<CloudinaryImageModel>> = {
   github?: string
 }
 
+/**
+ * Represents a converted author entry.
+ */
 export type ConvertedAuthor = Entry<AuthorModel<CloudinaryImageModel>>

@@ -34,21 +34,23 @@ export default function ArticleInfo<TBody>({
           {new Intl.DateTimeFormat(`hu`).format(new Date(post.publishDate))}
         </span>
         <span> · </span>
-        {post.tags.map(tag => (
-          <Link
-            href={`/kategoriak/${tag.sys.id}`}
-            passHref
-            key={tag.sys.id}
-            prefetch={false}
-          >
-            <a className="group focus:outline-none">
-              <span className="underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 motion-safe:transition-colors">
-                {tag.name}
-              </span>{' '}
-              🔗
-            </a>
-          </Link>
-        ))}
+        <div className="inline-grid grid-flow-col gap-2">
+          {post.tags.map(tag => (
+            <Link
+              href={`/kategoriak/${tag.sys.id}`}
+              passHref
+              key={tag.sys.id}
+              prefetch={false}
+            >
+              <a className="group focus:outline-none">
+                <span className="text-xs inline-block mr-1">🔗</span>
+                <span className="group-hover:underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 group-focus-visible:underline motion-safe:transition-colors">
+                  {tag.name}
+                </span>
+              </a>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   )
