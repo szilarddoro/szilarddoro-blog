@@ -35,7 +35,12 @@ export default function ArticleInfo<TBody>({
         </span>
         <span> · </span>
         {post.tags.map(tag => (
-          <Link href={`/kategoriak/${tag.sys.id}`} passHref key={tag.sys.id}>
+          <Link
+            href={`/kategoriak/${tag.sys.id}`}
+            passHref
+            key={tag.sys.id}
+            prefetch={false}
+          >
             <a className="group focus:outline-none">
               <span className="underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 motion-safe:transition-colors">
                 {tag.name}

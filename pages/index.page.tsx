@@ -70,7 +70,7 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
         {blogPosts &&
           blogPosts.items.map(post => (
             <section key={post.sys.id}>
-              <Link href={`/${post.fields.slug}/`} passHref>
+              <Link href={`/${post.fields.slug}/`} passHref prefetch={false}>
                 <a className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 focus-visible:text-emerald-500 focus-visible:outline-none motion-safe:transition-colors">
                   <Heading
                     variant="h2"

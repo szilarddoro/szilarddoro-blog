@@ -102,7 +102,7 @@ export default function Post({post, error}: PostPageProps) {
             <Paragraph className="my-4">{children}</Paragraph>
           ),
           a: ({children, ...props}: PropsWithChildren<{href: string}>) => (
-            <Link passHref {...props}>
+            <Link passHref {...props} prefetch={false}>
               <a
                 target={props.href.startsWith(`/`) ? '_self' : '_blank'}
                 rel={props.href.startsWith(`/`) ? '' : 'noopener noreferrer'}

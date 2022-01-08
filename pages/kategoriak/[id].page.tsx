@@ -53,7 +53,7 @@ export default function CategoryList({
       <div className="grid gap-6 mt-4">
         {blogPosts.items.map(post => (
           <section key={post.sys.id}>
-            <Link href={`/${post.fields.slug}/`} passHref>
+            <Link href={`/${post.fields.slug}/`} passHref prefetch={false}>
               <a className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
                 <Heading
                   variant="h2"
