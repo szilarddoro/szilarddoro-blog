@@ -118,6 +118,7 @@ export default function Home({
 export async function getStaticProps() {
   const rawBlogPosts = await contentfulClient.getEntries<PostModel>({
     content_type: `blogPost`,
+    order: `-sys.createdAt`,
   })
 
   const convertedBlogPosts = await Promise.all(

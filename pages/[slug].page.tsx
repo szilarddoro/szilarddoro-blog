@@ -201,8 +201,6 @@ export async function getStaticProps({
       )
     }
 
-    console.log(siteConfiguration)
-
     return {
       props: {
         post,

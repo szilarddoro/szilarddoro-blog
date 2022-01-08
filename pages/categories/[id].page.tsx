@@ -132,6 +132,7 @@ export async function getStaticProps({
     const tag = await contentfulClient.getTag(id)
     const rawBlogPosts = await contentfulClient.getEntries<PostModel>({
       content_type: `blogPost`,
+      order: `-sys.createdAt`,
       [`metadata.tags.sys.id[in]`]: id,
     })
 
