@@ -74,7 +74,7 @@ Represents an image. The return value is managed by
 ### Author
 
 Represents an author. There are additional fields returned by Contentful. Check
-out the [offical Github repository](https://github.com/contentful/contentful.js)
+out the [official Github repository](https://github.com/contentful/contentful.js)
 to learn more.
 
 | Field    | Type              | Description                   |
@@ -92,7 +92,7 @@ to learn more.
 
 Represents a blog post. There are additional fields returned by Contentful.
 Check out the
-[offical GitHub repository](https://github.com/contentful/contentful.js) to
+[official GitHub repository](https://github.com/contentful/contentful.js) to
 learn more.
 
 | Field       | Type                  | Description                                                                         |
