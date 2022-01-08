@@ -33,8 +33,6 @@ export default function Post({post, error}: PostPageProps) {
     throw new Error(`Please make sure that blog post is available.`)
   }
 
-  console.log(post.fields.heroImage)
-
   return (
     <Layout
       pageTitle={post.fields.title}
