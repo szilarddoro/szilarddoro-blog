@@ -1,14 +1,13 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import type {DetailedHTMLProps, HTMLProps} from 'react'
-import {CloudinaryImageModel} from '../../types/image.types'
-import type {PostModel} from '../../types/post.types'
+import type {ConvertedPost} from '../../types/post.types'
 
 export type ArticleInfoProps<TBody> = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
   HTMLDivElement
 > & {
-  post: PostModel<CloudinaryImageModel, TBody>
+  post: ConvertedPost<TBody>
 }
 
 export default function ArticleInfo<TBody>({
@@ -28,14 +27,16 @@ export default function ArticleInfo<TBody>({
       {children}
 
       <div>
-        <span>{post.author.fields.name}</span>
+        <span>{post.fields.author.fields.name}</span>
         <span> · </span>
         <span>
-          {new Intl.DateTimeFormat(`hu`).format(new Date(post.publishDate))}
+          {new Intl.DateTimeFormat(post.sys.locale).format(
+            new Date(post.sys.createdAt),
+          )}
         </span>
         <span> · </span>
-        <div className="inline-grid grid-flow-col gap-2">
-          {post.tags.map(tag => (
+        <div className="inline-grid grid-flow-col gap-1.5">
+          {post.fields.tags.map(tag => (
             <Link
               href={`/categories/${tag.sys.id}`}
               passHref

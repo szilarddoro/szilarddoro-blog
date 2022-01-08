@@ -71,7 +71,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
     >
       <ArticleInfo
         className="grid grid-flow-col place-content-start items-center gap-2 mb-4"
-        post={post.fields}
+        post={post}
       >
         <Image
           src={post.fields.author.fields.image.relative_url}

@@ -1,4 +1,4 @@
-import type {EntryCollection, Tag} from 'contentful'
+import type {Tag} from 'contentful'
 import type {GetStaticPropsContext} from 'next'
 import Link from 'next/link'
 import ArticleInfo from '../../components/article-info'
@@ -11,7 +11,6 @@ import {
   ConfigurationModel,
   ConvertedConfiguration,
 } from '../../types/configuration.types'
-import {CloudinaryImageModel} from '../../types/image.types'
 import type {ConvertedPostCollection, PostModel} from '../../types/post.types'
 
 export type CategoryListPageProps = {
@@ -26,7 +25,7 @@ export type CategoryListPageProps = {
   /**
    * A collection of blog posts.
    */
-  blogPosts?: EntryCollection<PostModel<CloudinaryImageModel>>
+  blogPosts?: ConvertedPostCollection
   /**
    * Error message.
    */
@@ -99,7 +98,7 @@ export default function CategoryList({
               </a>
             </Link>
 
-            <ArticleInfo className="mt-2" post={post.fields} />
+            <ArticleInfo className="mt-2" post={post} />
           </section>
         ))}
       </div>

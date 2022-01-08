@@ -38,7 +38,7 @@ export default function ImageWithCaption({
       {caption && (
         <figcaption
           className={clsx(
-            `text-xs text-gray-500 justify-self-center`,
+            `text-xs text-gray-500 dark:text-gray-300 justify-self-center`,
             captionClassName,
           )}
         >
