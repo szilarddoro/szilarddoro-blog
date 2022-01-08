@@ -1,1 +1,1 @@
-## blog.szilarddoro.com
+## szilarddoro.com

@@ -35,9 +35,11 @@ export default function Layout({
   return (
     <div className={clsx(`pb-24`, wrapperClassName)} {...props}>
       <NextSeo
-        defaultTitle="szilarddoro.com"
-        title={pageTitle || 'szilarddoro.com'}
-        titleTemplate={hasTitle ? '%s — szilarddoro.com' : 'szilarddoro.com'}
+        defaultTitle="Szilard's Scrapyard"
+        title={pageTitle || `Szilard's Scrapyard`}
+        titleTemplate={
+          hasTitle ? `%s — Szilard's Scrapyard` : `Szilard's Scrapyard`
+        }
         {...seoProps}
       />
 

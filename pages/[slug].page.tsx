@@ -47,7 +47,7 @@ export default function Post({post, error}: PostPageProps) {
             authors: [post.fields.author.fields.name],
           },
           url: `https://szilarddoro.com/${post.fields.slug}`,
-          images: [{url: post.fields.heroImage.relative_url}],
+          images: [{url: post.fields.heroImage.secure_url}],
         },
       }}
     >
