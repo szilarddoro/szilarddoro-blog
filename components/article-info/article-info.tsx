@@ -1,21 +1,22 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import type {DetailedHTMLProps, HTMLProps} from 'react'
+import {CloudinaryImageModel} from '../../types/image.types'
 import type {PostModel} from '../../types/post.types'
 
-export type ArticleInfoProps = DetailedHTMLProps<
+export type ArticleInfoProps<TBody> = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
   HTMLDivElement
 > & {
-  post: PostModel
+  post: PostModel<CloudinaryImageModel, TBody>
 }
 
-export default function ArticleInfo({
+export default function ArticleInfo<TBody>({
   className,
   children,
   post,
   ...props
-}: ArticleInfoProps) {
+}: ArticleInfoProps<TBody>) {
   return (
     <div
       className={clsx(
@@ -35,8 +36,8 @@ export default function ArticleInfo({
         <span> · </span>
         {post.tags.map(tag => (
           <Link href={`/kategoriak/${tag.sys.id}`} passHref key={tag.sys.id}>
-            <a className="group">
-              <span className="underline group-hover:text-blue-500 group-active:text-blue-500">
+            <a className="group focus:outline-none">
+              <span className="underline group-hover:text-green-500 group-active:text-green-600 group-focus-within:text-green-500 motion-safe:transition-colors">
                 {tag.name}
               </span>{' '}
               🔗

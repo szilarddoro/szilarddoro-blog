@@ -1,30 +1,26 @@
-import {Entry} from 'contentful'
 import type {GetStaticPropsContext} from 'next'
-import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote'
-import {serialize} from 'next-mdx-remote/serialize'
-import dynamic from 'next/dynamic'
+import {MDXRemote} from 'next-mdx-remote'
 import Image from 'next/image'
 import Link from 'next/link'
 import type {PropsWithChildren} from 'react'
 import ArticleInfo from '../components/article-info'
 import Heading from '../components/heading'
+import ImageWithCaption from '../components/image-with-caption'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
+import SyntaxHighlighter from '../components/syntax-highlighter'
 import contentfulClient from '../lib/contentful-client'
-import type {PostModel} from '../types/post.types'
-
-const SyntaxHighlighter = dynamic(
-  () => import(`../components/syntax-highlighter`),
-)
-
-type PostWithSerializedBody = Entry<
-  PostModel & {
-    serializedBody: MDXRemoteSerializeResult
-  }
->
+import convertPost from '../lib/convert-post'
+import type {ConvertedPost, PostModel} from '../types/post.types'
 
 export type PostPageProps = {
-  post?: PostWithSerializedBody
+  /**
+   * A post from Contentful.
+   */
+  post?: ConvertedPost
+  /**
+   * Error message.
+   */
   error?: string
 }
 
@@ -43,7 +39,7 @@ export default function Post({post, error}: PostPageProps) {
       seoProps={{
         description: post.fields.description,
         openGraph: {
-          images: [{url: `https:${post.fields.heroImage.fields.file.url}`}],
+          images: [{url: post.fields.heroImage.relative_url}],
         },
       }}
     >
@@ -52,8 +48,8 @@ export default function Post({post, error}: PostPageProps) {
         post={post.fields}
       >
         <Image
-          src={`https:${post.fields.author.fields.image.fields.file.url}`}
-          alt={post.fields.author.fields.image.fields.title}
+          src={post.fields.author.fields.image.relative_url}
+          alt={post.fields.author.fields.image.context.custom.alt}
           width={32}
           height={32}
           className="rounded-full"
@@ -62,23 +58,26 @@ export default function Post({post, error}: PostPageProps) {
         />
       </ArticleInfo>
 
-      <div className="mb-6 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
-        <Image
-          src={`https:${post.fields.heroImage.fields.file.url}`}
-          alt={post.fields.heroImage.fields.title}
-          width={700}
-          height={366}
-          objectFit="cover"
-          layout="responsive"
-          sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
-          priority
-        />
-      </div>
+      {post.fields.heroImage.relative_url && (
+        <div className="mb-6 -mx-4 md:mx-0 md:rounded-md overflow-hidden">
+          <ImageWithCaption
+            src={post.fields.heroImage.relative_url}
+            alt={post.fields.heroImage.context.custom.alt}
+            caption={post.fields.heroImage.context.custom.caption}
+            width={post.fields.heroImage.width}
+            height={post.fields.heroImage.height}
+            objectFit="cover"
+            layout="responsive"
+            sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
+            priority
+          />
+        </div>
+      )}
 
       <Heading className="leading-snug">{post.fields.title}</Heading>
 
       <MDXRemote
-        {...post.fields.serializedBody}
+        {...post.fields.body}
         components={{
           h2: (props: any) => Heading({variant: `h2`, ...props}),
           h3: (props: any) => Heading({variant: `h3`, ...props}),
@@ -97,22 +96,35 @@ export default function Post({post, error}: PostPageProps) {
               <a
                 target={props.href.startsWith(`/`) ? '_self' : '_blank'}
                 rel={props.href.startsWith(`/`) ? '' : 'noopener noreferrer'}
-                className="text-blue-500 hover:underline border-b-"
+                className="text-green-500 hover:underline"
               >
                 {children}
               </a>
             </Link>
           ),
-          pre: ({children}: PropsWithChildren<any>) => {
-            return (
-              <SyntaxHighlighter
-                showLineNumbers
-                language={children.props.className.replace(/language\-/i, '')}
-              >
-                {children.props.children}
-              </SyntaxHighlighter>
-            )
-          },
+          pre: ({children}: PropsWithChildren<any>) => (
+            <SyntaxHighlighter
+              showLineNumbers
+              language={children.props.className.replace(/language\-/i, '')}
+            >
+              {children.props.children}
+            </SyntaxHighlighter>
+          ),
+          img: ({src, alt, width, height, caption}: any) => (
+            <ImageWithCaption
+              src={src.replace(
+                /https:\/\/res\.cloudinary\.com\/dtfzsgeku\/image\/upload\/v\d+/i,
+                ``,
+              )}
+              alt={alt}
+              width={width || 1000}
+              height={height || 200}
+              layout="responsive"
+              objectFit="cover"
+              sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
+              caption={caption}
+            />
+          ),
         }}
       />
     </Layout>
@@ -142,36 +154,18 @@ export async function getStaticProps({
   }
 
   try {
-    const {slug} = params
-    const data = await contentfulClient.getEntries<PostModel>({
+    const {
+      items: [rawPost],
+    } = await contentfulClient.getEntries<PostModel>({
       content_type: `blogPost`,
-      'fields.slug': slug,
+      'fields.slug': params.slug,
     })
-    const [post] = data.items
 
-    if (!post) {
-      return {
-        props: {
-          error: `Post not found.`,
-        },
-      }
-    }
-
-    const serializedBody = await serialize(post.fields.body)
-    const tags = await Promise.all(
-      post.metadata.tags.map(tag => contentfulClient.getTag(tag.sys.id)),
-    )
+    const post = await convertPost(rawPost)
 
     return {
       props: {
-        post: {
-          ...post,
-          fields: {
-            ...post.fields,
-            tags,
-            serializedBody,
-          },
-        },
+        post,
       },
     }
   } catch (error) {

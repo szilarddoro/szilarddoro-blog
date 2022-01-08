@@ -1,4 +1,3 @@
-import type {Entry, EntryCollection} from 'contentful'
 import Image from 'next/image'
 import Link from 'next/link'
 import ArticleInfo from '../components/article-info'
@@ -6,12 +5,20 @@ import Heading, {defaultStyleMap} from '../components/heading'
 import Layout from '../components/layout'
 import Paragraph from '../components/paragraph'
 import contentfulClient from '../lib/contentful-client'
-import type {AuthorModel} from '../types/author.types'
-import type {PostModel} from '../types/post.types'
+import convertPost from '../lib/convert-post'
+import getAuthorWithRelativeImage from '../lib/get-author-with-relative-image'
+import type {AuthorModel, ConvertedAuthor} from '../types/author.types'
+import type {ConvertedPostCollection, PostModel} from '../types/post.types'
 
 export type HomePageProps = {
-  blogPosts?: EntryCollection<PostModel>
-  primaryAuthor?: Entry<AuthorModel>
+  /**
+   * A collection of blog posts.
+   */
+  blogPosts?: ConvertedPostCollection
+  /**
+   * Primary author of the blog.
+   */
+  primaryAuthor?: ConvertedAuthor
 }
 
 export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
@@ -22,15 +29,17 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
   return (
     <Layout className="grid">
       {primaryAuthor && (
-        <div className="grid grid-flow-col justify-self-start items-center gap-3 mb-4">
+        <div className="grid grid-flow-col justify-self-start items-center gap-3 mt-2 mb-4">
           <Image
-            src={`https:${primaryAuthor.fields.image.fields.file.url}`}
-            alt={primaryAuthor.fields.image.fields.title}
+            src={primaryAuthor.fields.image.relative_url}
+            alt={primaryAuthor.fields.image.context.custom.alt}
             width={52}
             height={52}
             className="rounded-full"
             layout="fixed"
             priority
+            objectFit="cover"
+            quality={100}
           />
 
           <div className="grid">
@@ -46,7 +55,7 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
         {blogPosts.items.map(post => (
           <section key={post.sys.id}>
             <Link href={`/${post.fields.slug}/`} passHref>
-              <a className="text-gray-900 dark:text-white hover:text-blue-500 active:text-blue-600 motion-safe:transition-colors focus-visible:text-blue-500 focus-visible:outline-none">
+              <a className="text-gray-900 dark:text-white hover:text-green-500 active:text-green-600 focus-visible:text-green-500 focus-visible:outline-none motion-safe:transition-colors">
                 <Heading
                   variant="h2"
                   styleMap={{
@@ -72,31 +81,31 @@ export default function Home({blogPosts, primaryAuthor}: HomePageProps) {
 }
 
 export async function getStaticProps() {
-  let blogPosts = await contentfulClient.getEntries<PostModel>({
+  const rawBlogPosts = await contentfulClient.getEntries<PostModel>({
     content_type: `blogPost`,
   })
 
-  if (blogPosts) {
-    const items = await Promise.all(
-      blogPosts.items.map(async item => {
-        const tags = await Promise.all(
-          item.metadata.tags.map(tag => contentfulClient.getTag(tag.sys.id)),
-        )
+  const convertedBlogPosts = await Promise.all(
+    rawBlogPosts.items.map(convertPost),
+  )
 
-        return {...item, fields: {...item.fields, tags}}
-      }),
-    )
-
-    blogPosts = {...blogPosts, items}
+  const blogPosts: ConvertedPostCollection = {
+    ...rawBlogPosts,
+    items: convertedBlogPosts,
   }
 
   const primaryAuthorId = process.env.PRIMARY_AUTHOR_ID
-  let primaryAuthor: Entry<AuthorModel> | null = null
+  let primaryAuthor: ConvertedAuthor | null = null
 
   if (primaryAuthorId) {
-    primaryAuthor = await contentfulClient.getEntry<AuthorModel>(
+    const primaryAuthorData = await contentfulClient.getEntry<AuthorModel>(
       primaryAuthorId,
     )
+
+    primaryAuthor = {
+      ...(primaryAuthorData as unknown as ConvertedAuthor),
+      fields: getAuthorWithRelativeImage(primaryAuthorData.fields),
+    }
   }
 
   return {

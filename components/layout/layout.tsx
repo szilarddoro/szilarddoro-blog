@@ -41,26 +41,23 @@ export default function Layout({
         {...seoProps}
       />
 
-      <header className="py-4">
+      <header className="py-2">
         <div className="grid gap-6 container max-w-3xl mx-auto px-4 md:px-6">
           <Link href="/" passHref>
-            <a className="my-3 justify-self-start hover:text-blue-500 active:text-blue-600 motion-safe:transition-colors focus-visible:text-blue-500 focus-visible:outline-none">
+            <a className="my-3 justify-self-start hover:text-green-500 active:text-green-600 motion-safe:transition-colors focus-visible:text-green-500 focus-visible:outline-none">
               <Heading component="span" variant="h2">
-                Personal Junkyard
+                Szilard&apos;s Scrapyard
               </Heading>
             </a>
           </Link>
         </div>
       </header>
 
-      <main
-        className={clsx(
-          'container max-w-3xl mx-auto pb-24 px-4 md:px-6',
-          className,
-        )}
+      <article
+        className={clsx('container max-w-3xl mx-auto px-4 md:px-6', className)}
       >
         {children}
-      </main>
+      </article>
     </div>
   )
 }

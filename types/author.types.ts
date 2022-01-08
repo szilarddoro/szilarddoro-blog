@@ -1,12 +1,12 @@
 import type {Entry} from 'contentful'
-import type {ImageModel} from './image.types'
+import type {CloudinaryImageModel} from './image.types'
 
 /**
  * Represents an author content model.
  */
-export type AuthorModel = {
+export type AuthorModel<TImage = Array<CloudinaryImageModel>> = {
   id: string
-  image: Entry<ImageModel>
+  image: TImage
   name: string
   title: string
   email: string
@@ -14,3 +14,5 @@ export type AuthorModel = {
   twitter?: string
   github?: string
 }
+
+export type ConvertedAuthor = Entry<AuthorModel<CloudinaryImageModel>>
