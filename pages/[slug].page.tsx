@@ -116,7 +116,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           h3: (props: any) => Heading({variant: `h3`, ...props}),
           h4: (props: any) => Heading({variant: `h4`, ...props}),
           ul: ({children}: PropsWithChildren<unknown>) => (
-            <ul className="list-disc list-inside">{children}</ul>
+            <ul className="list-disc list-inside my-4">{children}</ul>
           ),
           li: ({children}: PropsWithChildren<unknown>) => (
             <li className="pl-2">{children}</li>
