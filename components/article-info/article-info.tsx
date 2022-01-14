@@ -7,13 +7,21 @@ export type ArticleInfoProps<TBody> = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
   HTMLDivElement
 > & {
+  /**
+   * Post data used to display metadata.
+   */
   post: ConvertedPost<TBody>
+  /**
+   * Determines whether the author is being displayed or not.
+   */
+  hideAuthor?: boolean
 }
 
 export default function ArticleInfo<TBody>({
   className,
   children,
   post,
+  hideAuthor,
   ...props
 }: ArticleInfoProps<TBody>) {
   return (
@@ -27,6 +35,13 @@ export default function ArticleInfo<TBody>({
       {children}
 
       <div>
+        {!hideAuthor && (
+          <>
+            <span>{post.fields.author.fields.name}</span>
+            <span> · </span>
+          </>
+        )}
+
         <span>
           {new Intl.DateTimeFormat(post.sys.locale).format(
             new Date(post.sys.createdAt),

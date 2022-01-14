@@ -126,7 +126,7 @@ export default function Home({
                 </a>
               </Link>
 
-              <ArticleInfo className="mt-2" post={post} />
+              <ArticleInfo className="mt-2" post={post} hideAuthor />
             </section>
           ))}
       </div>

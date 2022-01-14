@@ -42,10 +42,16 @@ export default function App({Component, pageProps}: AppProps) {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
         <meta name="msapplication-TileColor" content="#0f172a" />
         <meta name="theme-color" content="#0f172a" />
-        <meta name="application-name" content="Scrapyard" />
+        <meta
+          name="application-name"
+          content={process.env.NEXT_PUBLIC_APP_NAME}
+        />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Scrapyard" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content={process.env.NEXT_PUBLIC_APP_NAME}
+        />
       </Head>
 
       <ErrorBoundary

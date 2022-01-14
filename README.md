@@ -23,11 +23,12 @@ Feel free to fork the repository or contribute via
 | **CONTENTFUL_PREVIEW_ACCESS_TOKEN** | `string`             | Contentful's Content Preview API access token                                                                 |
 | **CONTENTFUL_SPACE_ID**             | `string`             | Identifier of your Contentful's space                                                                         |
 | **SITE_CONFIGURATION_ID**           | `string`             | Entry identifier of the main site configuration object on Contentful                                          |
+| **NEXT_PUBLIC_APP_NAME**            | `string`             | Name of the PWA                                                                                               |
 | **PRIMARY_AUTHOR_ID**               | `string` (optional)  | Entry identifier of the primary author, you can omit if you don't wish to display any author on the home page |
 | **PREVIEW**                         | `boolean` (optional) | Whether or not the page should use the Preview API                                                            |
 
-You can create an `.env.local` file or set these environment variables on the
-platform you are building and hosting your blog.
+You can create an `.env` file (`env.local` is recommended) or set these
+environment variables on the platform you are building and hosting your blog.
 
 ## Running the blog locally
 

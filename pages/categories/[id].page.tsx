@@ -98,7 +98,7 @@ export default function CategoryList({
               </a>
             </Link>
 
-            <ArticleInfo className="mt-2" post={post} />
+            <ArticleInfo className="mt-2" post={post} hideAuthor />
           </section>
         ))}
       </div>

@@ -14,7 +14,9 @@ export default async function convertPost(post: Entry<PostModel>) {
     ...(post.fields.author as unknown as ConvertedAuthor),
     fields: getAuthorWithRelativeImage(post.fields.author.fields),
   }
-  const mappedHeroImage = imageWithRelativeUrl(post.fields.heroImage[0])
+  const mappedHeroImage = post.fields.heroImage
+    ? imageWithRelativeUrl(post.fields.heroImage[0])
+    : null
   const serializedBody = await serialize(post.fields.body)
   const convertedPost = post as unknown as ConvertedPost
 
