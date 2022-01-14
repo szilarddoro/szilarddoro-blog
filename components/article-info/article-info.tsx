@@ -27,13 +27,18 @@ export default function ArticleInfo<TBody>({
       {children}
 
       <div>
-        <span>{post.fields.author.fields.name}</span>
-        <span> · </span>
         <span>
           {new Intl.DateTimeFormat(post.sys.locale).format(
             new Date(post.sys.createdAt),
           )}
         </span>
+        <span> · </span>
+        {post.fields.readingTime < 5 && <span>☕</span>}
+        {post.fields.readingTime >= 5 && post.fields.readingTime < 10 && (
+          <span>☕☕</span>
+        )}
+        {post.fields.readingTime >= 10 && <span>☕☕☕</span>}
+        <span className="ml-1">{post.fields.readingTime} perc</span>
         <span> · </span>
         <div className="inline-grid grid-flow-col gap-1.5">
           {post.fields.tags.map(tag => (
@@ -44,8 +49,8 @@ export default function ArticleInfo<TBody>({
               prefetch={false}
             >
               <a className="group focus:outline-none">
-                <span className="text-xs inline-block mr-1">🔗</span>
-                <span className="group-hover:underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 group-focus-visible:underline motion-safe:transition-colors">
+                <span className="text-xs inline-block">🔗</span>
+                <span className="group-hover:underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 group-focus-visible:underline motion-safe:transition-colors ml-1">
                   {tag.name}
                 </span>
               </a>

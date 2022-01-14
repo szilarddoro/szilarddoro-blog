@@ -13,16 +13,23 @@ export type PostModel<TImage = Array<CloudinaryImageModel>, TBody = string> = {
   body: TBody
   slug: string
   description: string
-  publishDate: string
   tags: Array<Tag>
   author: Entry<AuthorModel<TImage>>
 }
+
+type ConvertedPostEntryBase<TSerializeResult = Record<string, unknown>> =
+  PostModel<
+    CloudinaryImageModel,
+    MDXRemoteSerializeResult<TSerializeResult>
+  > & {
+    readingTime: number
+  }
 
 /**
  * Represents a converted post entry.
  */
 export type ConvertedPost<TSerializeResult = Record<string, unknown>> = Entry<
-  PostModel<CloudinaryImageModel, MDXRemoteSerializeResult<TSerializeResult>>
+  ConvertedPostEntryBase<TSerializeResult>
 >
 
 /**
@@ -30,6 +37,4 @@ export type ConvertedPost<TSerializeResult = Record<string, unknown>> = Entry<
  */
 export type ConvertedPostCollection<
   TSerializeResult = Record<string, unknown>,
-> = EntryCollection<
-  PostModel<CloudinaryImageModel, MDXRemoteSerializeResult<TSerializeResult>>
->
+> = EntryCollection<ConvertedPostEntryBase<TSerializeResult>>

@@ -121,6 +121,6 @@ learn more.
 | body        | `MDXSerializedResult` | A serialized markdown string                                                        |
 | slug        | `string`              | Slug of the blog post                                                               |
 | description | `string`              | Short description used as a meta description as well                                |
-| publishDate | `string`              | Publish date of the blog post                                                       |
 | tags        | `Array<Tag>`          | An array of tags provided by Contentful's API                                       |
 | author      | `Author`              | Author of the blog post                                                             |
+| readingTime | `number`              | Number of minutes it takes for an average reader to read the blog post              |

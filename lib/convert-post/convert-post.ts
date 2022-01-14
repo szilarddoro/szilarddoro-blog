@@ -18,6 +18,9 @@ export default async function convertPost(post: Entry<PostModel>) {
   const serializedBody = await serialize(post.fields.body)
   const convertedPost = post as unknown as ConvertedPost
 
+  const words = post.fields.body.split(` `).length
+  const readingTime = Math.ceil(words / 200)
+
   return {
     ...convertedPost,
     fields: {
@@ -26,6 +29,7 @@ export default async function convertPost(post: Entry<PostModel>) {
       author: mappedAuthor,
       heroImage: mappedHeroImage,
       body: serializedBody,
+      readingTime,
     },
   } as ConvertedPost
 }
