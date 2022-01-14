@@ -9,12 +9,12 @@ import type {CloudinaryImageModel} from './image.types'
 export type PostModel<TImage = Array<CloudinaryImageModel>, TBody = string> = {
   id: string
   title: string
-  heroImage: TImage
   body: TBody
   slug: string
   description: string
   tags: Array<Tag>
   author: Entry<AuthorModel<TImage>>
+  heroImage?: TImage
 }
 
 type ConvertedPostEntryBase<TSerializeResult = Record<string, unknown>> =

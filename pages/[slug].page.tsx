@@ -65,7 +65,13 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           url: `${siteConfiguration.fields.siteUrl.replace(/\/$/i, '')}/${
             post.fields.slug
           }`,
-          images: [{url: post.fields.heroImage.secure_url}],
+          images: [
+            {
+              url:
+                post.fields.heroImage?.secure_url ||
+                siteConfiguration.fields.openGraphImage,
+            },
+          ],
         },
       }}
     >
@@ -84,7 +90,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
         />
       </ArticleInfo>
 
-      {post.fields.heroImage.relative_url && (
+      {post.fields.heroImage && post.fields.heroImage.relative_url && (
         <ImageWithCaption
           wrapperClassName="mb-6"
           imageWrapperClassName="-mx-4 md:mx-0 md:rounded-md overflow-hidden"
