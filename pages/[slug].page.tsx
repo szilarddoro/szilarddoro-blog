@@ -98,7 +98,6 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
       <MDXRemote
         {...post.fields.body}
         components={{
-          // todo: convert content to ID and make H2 linkable
           h2: (props: PropsWithChildren<unknown>) => (
             <Link
               href={`#${convertTextToIdentifier(
@@ -113,7 +112,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
                   ...props,
                   children: (
                     <>
-                      <span className="group-hover:underline">
+                      <span className="group-hover:underline leading-normal">
                         {props.children}
                       </span>{' '}
                       <span className="text-base group-hover:inline hidden">
