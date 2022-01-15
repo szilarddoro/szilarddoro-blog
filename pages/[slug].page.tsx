@@ -1,6 +1,5 @@
 import type {GetStaticPropsContext} from 'next'
 import {MDXRemote} from 'next-mdx-remote'
-import Image from 'next/image'
 import Link from 'next/link'
 import type {PropsWithChildren} from 'react'
 import ArticleInfo from '../components/article-info'
@@ -76,20 +75,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
         },
       }}
     >
-      <ArticleInfo
-        className="grid grid-flow-col place-content-start items-center gap-2 mb-4"
-        post={post}
-      >
-        <Image
-          src={post.fields.author.fields.image.relative_url}
-          alt={post.fields.author.fields.image.context.custom.alt}
-          width={32}
-          height={32}
-          className="rounded-full"
-          layout="fixed"
-          priority
-        />
-      </ArticleInfo>
+      <ArticleInfo className="mb-4" post={post} />
 
       {post.fields.heroImage && post.fields.heroImage.relative_url && (
         <ImageWithCaption
@@ -127,7 +113,9 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
                   ...props,
                   children: (
                     <>
-                      <span className="hover:underline">{props.children}</span>{' '}
+                      <span className="group-hover:underline">
+                        {props.children}
+                      </span>{' '}
                       <span className="text-base group-hover:inline hidden">
                         🔗
                       </span>
@@ -148,7 +136,7 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
             <ol className="list-decimal list-inside my-2">{children}</ol>
           ),
           li: ({children}: PropsWithChildren<unknown>) => (
-            <li className="pl-2 my-1 leading-relaxed">{children}</li>
+            <li className="pl-2 my-2 leading-relaxed">{children}</li>
           ),
           p: ({children}: PropsWithChildren<unknown>) => (
             <Paragraph className="my-4">{children}</Paragraph>
