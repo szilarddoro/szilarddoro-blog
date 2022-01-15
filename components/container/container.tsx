@@ -20,7 +20,7 @@ export default function Container({
   return createElement(
     component,
     {
-      className: clsx(`container max-w-3xl mx-auto px-4 md:px-6`, className),
+      className: clsx(`container max-w-4xl mx-auto px-4 md:px-6`, className),
       ...props,
     },
     children,

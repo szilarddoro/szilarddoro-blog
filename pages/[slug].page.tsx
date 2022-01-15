@@ -11,6 +11,7 @@ import Paragraph from '../components/paragraph'
 import SyntaxHighlighter from '../components/syntax-highlighter'
 import contentfulClient from '../lib/contentful-client'
 import convertPost from '../lib/convert-post'
+import convertTextToIdentifier from '../lib/convert-text-to-identifier'
 import type {
   ConfigurationModel,
   ConvertedConfiguration,
@@ -112,14 +113,42 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
         {...post.fields.body}
         components={{
           // todo: convert content to ID and make H2 linkable
-          h2: (props: any) => Heading({variant: `h2`, ...props}),
-          h3: (props: any) => Heading({variant: `h3`, ...props}),
-          h4: (props: any) => Heading({variant: `h4`, ...props}),
+          h2: (props: PropsWithChildren<unknown>) => (
+            <Link
+              href={`#${convertTextToIdentifier(
+                props.children?.toString() || ``,
+              )}`}
+            >
+              <a className="group">
+                {Heading({
+                  variant: `h2`,
+                  id: convertTextToIdentifier(props.children?.toString() || ``),
+                  className: `my-6`,
+                  ...props,
+                  children: (
+                    <>
+                      <span className="hover:underline">{props.children}</span>{' '}
+                      <span className="text-base group-hover:inline hidden">
+                        🔗
+                      </span>
+                    </>
+                  ),
+                })}
+              </a>
+            </Link>
+          ),
+          h3: (props: PropsWithChildren<unknown>) =>
+            Heading({variant: `h3`, className: `my-2`, ...props}),
+          h4: (props: PropsWithChildren<unknown>) =>
+            Heading({variant: `h4`, ...props}),
           ul: ({children}: PropsWithChildren<unknown>) => (
-            <ul className="list-disc list-inside my-4">{children}</ul>
+            <ul className="list-disc list-inside my-2">{children}</ul>
+          ),
+          ol: ({children}: PropsWithChildren<unknown>) => (
+            <ol className="list-decimal list-inside my-2">{children}</ol>
           ),
           li: ({children}: PropsWithChildren<unknown>) => (
-            <li className="pl-2">{children}</li>
+            <li className="pl-2 my-1 leading-relaxed">{children}</li>
           ),
           p: ({children}: PropsWithChildren<unknown>) => (
             <Paragraph className="my-4">{children}</Paragraph>
