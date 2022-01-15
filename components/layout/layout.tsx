@@ -96,7 +96,7 @@ export default function Layout({
             </Link>
           </div>
 
-          <Link href="mailto:hello@szilarddoro.com" passHref>
+          <Link href="mailto:blog@szilarddoro.com" passHref>
             <a className="focus-visible:outline-none group">
               📮{' '}
               <span className="underline hover:text-emerald-500 active:text-emerald-600 group-focus-visible:text-emerald-500 transition-colors">
