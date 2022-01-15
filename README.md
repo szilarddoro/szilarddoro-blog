@@ -54,7 +54,7 @@ how your site will look like once deployed.
 
 ## Deploy the blog
 
-There are several platforms that are an awesome choice for hosting your blog
+There are several platforms that are awesome for hosting your blog
 such as [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
 
 My own blog runs on [Vercel](https://vercel.com).
