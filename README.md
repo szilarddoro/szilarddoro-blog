@@ -13,7 +13,7 @@ Feel free to fork the repository or contribute via
 - [Cloudinary](https://cloudinary.com) - This is for storing and optimizing your
   images on the fly.
 - [Vercel](https://vercel.com) or [Netlify](https://netlify.com) or any other
-  hosting platform. It's a simply Next app, you can deploy it anywhere.
+  hosting platform. It's a simple Next.js app, you can deploy it anywhere.
 
 ## Configuring the environment
 
