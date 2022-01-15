@@ -13,7 +13,7 @@ Feel free to fork the repository or contribute via
 - [Cloudinary](https://cloudinary.com) - This is for storing and optimizing your
   images on the fly.
 - [Vercel](https://vercel.com) or [Netlify](https://netlify.com) or any other
-  hosting platform. It's a simply Next app, you can deploy it anywhere.
+  hosting platform. It's a simple Next.js app, you can deploy it anywhere.
 
 ## Configuring the environment
 
@@ -54,7 +54,7 @@ how your site will look like once deployed.
 
 ## Deploy the blog
 
-There are several platforms that are an awesome choice for hosting your blog
+There are several platforms that are awesome for hosting your blog
 such as [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
 
 My own blog runs on [Vercel](https://vercel.com).
