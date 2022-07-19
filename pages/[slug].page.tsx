@@ -82,8 +82,11 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           wrapperClassName="mb-6"
           imageWrapperClassName="-mx-4 md:mx-0 md:rounded-md overflow-hidden"
           src={post.fields.heroImage.relative_url}
-          alt={post.fields.heroImage.context.custom.alt}
-          caption={post.fields.heroImage.context.custom.caption}
+          alt={
+            post.fields.heroImage.context?.custom.alt ||
+            `Cover of ${post.fields.title}`
+          }
+          caption={post.fields.heroImage.context?.custom.caption || ''}
           width={post.fields.heroImage.width}
           height={post.fields.heroImage.height}
           objectFit="cover"
@@ -112,10 +115,10 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
                   ...props,
                   children: (
                     <>
-                      <span className="group-hover:underline leading-normal">
+                      <span className="leading-normal group-hover:underline">
                         {props.children}
                       </span>{' '}
-                      <span className="text-base group-hover:inline hidden">
+                      <span className="hidden text-base group-hover:inline">
                         🔗
                       </span>
                     </>
@@ -129,10 +132,10 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           h4: (props: PropsWithChildren<unknown>) =>
             Heading({variant: `h4`, ...props}),
           ul: ({children}: PropsWithChildren<unknown>) => (
-            <ul className="list-disc list-inside my-2">{children}</ul>
+            <ul className="my-2 list-disc list-inside">{children}</ul>
           ),
           ol: ({children}: PropsWithChildren<unknown>) => (
-            <ol className="list-decimal list-inside my-2">{children}</ol>
+            <ol className="my-2 list-decimal list-inside">{children}</ol>
           ),
           li: ({children}: PropsWithChildren<unknown>) => (
             <li className="pl-2 my-2 leading-relaxed">{children}</li>

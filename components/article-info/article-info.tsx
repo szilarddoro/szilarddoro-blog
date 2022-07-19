@@ -40,12 +40,15 @@ export default function ArticleInfo<TBody>({
     >
       {children}
 
-      <div className="grid grid-flow-row md:grid-flow-col gap-y-1 md:gap-y-0 place-content-start place-items-start items-center gap-x-1 text-sm sm:text-base">
+      <div className="grid items-center grid-flow-row text-sm md:grid-flow-col gap-y-1 md:gap-y-0 place-content-start place-items-start gap-x-1 sm:text-base">
         {!hideAuthor && (
-          <div className="inline-grid grid-flow-col items-center gap-2">
+          <div className="inline-grid items-center grid-flow-col gap-2">
             <Image
               src={post.fields.author.fields.image.relative_url}
-              alt={post.fields.author.fields.image.context.custom.alt}
+              alt={
+                post.fields.author.fields.image.context?.custom.alt ||
+                post.fields.author.fields.name
+              }
               width={32}
               height={32}
               className="rounded-full"
@@ -59,7 +62,7 @@ export default function ArticleInfo<TBody>({
 
         {!hideAuthor && <span className="hidden md:inline"> · </span>}
 
-        <div className="grid grid-flow-col items-center gap-1">
+        <div className="grid items-center grid-flow-col gap-1">
           <span>
             {new Intl.DateTimeFormat(post.sys.locale).format(
               new Date(post.sys.createdAt),

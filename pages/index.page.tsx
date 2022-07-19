@@ -60,10 +60,13 @@ export default function Home({
       }}
     >
       {primaryAuthor && (
-        <div className="grid grid-flow-col justify-self-start items-center gap-3 mt-2 mb-4">
+        <div className="grid items-center grid-flow-col gap-3 mt-2 mb-4 justify-self-start">
           <Image
             src={primaryAuthor.fields.image.relative_url}
-            alt={primaryAuthor.fields.image.context.custom.alt}
+            alt={
+              primaryAuthor.fields.image.context?.custom.alt ||
+              primaryAuthor.fields.name
+            }
             width={52}
             height={52}
             className="rounded-full"
@@ -74,7 +77,7 @@ export default function Home({
           />
 
           <div className="grid">
-            <span className="font-bold font-heading text-xl">
+            <span className="text-xl font-bold font-heading">
               {primaryAuthor.fields.name}
             </span>
             <span className="text-base">{primaryAuthor.fields.title}</span>
