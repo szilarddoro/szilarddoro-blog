@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import {createElement, DetailedHTMLProps, HTMLProps} from 'react'
+import {twMerge} from 'tailwind-merge'
 
 export type HeadingVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
@@ -46,7 +46,7 @@ export default function Heading({
 }: HeadingProps) {
   return createElement(
     component || variant,
-    {className: clsx(styleMap[variant], className), ...props},
+    {className: twMerge(styleMap[variant], className), ...props},
     children,
   )
 }

@@ -1,21 +1,21 @@
-import type {GetStaticPropsContext} from 'next'
-import {MDXRemote} from 'next-mdx-remote'
-import Link from 'next/link'
-import type {PropsWithChildren} from 'react'
-import ArticleInfo from '../components/article-info'
-import Heading from '../components/heading'
-import ImageWithCaption from '../components/image-with-caption'
-import Layout from '../components/layout'
-import Paragraph from '../components/paragraph'
-import SyntaxHighlighter from '../components/syntax-highlighter'
-import contentfulClient from '../lib/contentful-client'
-import convertPost from '../lib/convert-post'
-import convertTextToIdentifier from '../lib/convert-text-to-identifier'
+import ArticleInfo from '@/components/article-info'
+import Heading from '@/components/heading'
+import ImageWithCaption from '@/components/image-with-caption'
+import Layout from '@/components/layout'
+import Paragraph from '@/components/paragraph'
+import SyntaxHighlighter from '@/components/syntax-highlighter'
+import contentfulClient from '@/lib/contentful-client'
+import convertPost from '@/lib/convert-post'
+import convertTextToIdentifier from '@/lib/convert-text-to-identifier'
 import type {
   ConfigurationModel,
   ConvertedConfiguration,
-} from '../types/configuration.types'
-import type {ConvertedPost, PostModel} from '../types/post.types'
+} from '@/types/configuration.types'
+import type {ConvertedPost, PostModel} from '@/types/post.types'
+import type {GetStaticPropsContext} from 'next'
+import {MDXRemote} from 'next-mdx-remote'
+import Link, {LinkProps} from 'next/link'
+import type {PropsWithChildren} from 'react'
 
 export type PostPageProps = {
   /**
@@ -89,10 +89,9 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           caption={post.fields.heroImage.context?.custom.caption || ''}
           width={post.fields.heroImage.width}
           height={post.fields.heroImage.height}
-          objectFit="cover"
-          layout="responsive"
           sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
           priority
+          className="object-cover"
         />
       )}
 
@@ -106,25 +105,19 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
               href={`#${convertTextToIdentifier(
                 props.children?.toString() || ``,
               )}`}
+              className="group"
             >
-              <a className="group">
-                {Heading({
-                  variant: `h2`,
-                  id: convertTextToIdentifier(props.children?.toString() || ``),
-                  className: `my-6`,
-                  ...props,
-                  children: (
-                    <>
-                      <span className="leading-normal group-hover:underline">
-                        {props.children}
-                      </span>{' '}
-                      <span className="hidden text-base group-hover:inline">
-                        🔗
-                      </span>
-                    </>
-                  ),
-                })}
-              </a>
+              <Heading
+                variant="h2"
+                id={convertTextToIdentifier(props.children?.toString() || ``)}
+                className="my-6"
+                {...props}
+              >
+                <span className="leading-normal group-hover:underline">
+                  {props.children}
+                </span>{' '}
+                <span className="hidden text-base group-hover:inline">🔗</span>
+              </Heading>
             </Link>
           ),
           h3: (props: PropsWithChildren<unknown>) =>
@@ -143,17 +136,35 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           p: ({children}: PropsWithChildren<unknown>) => (
             <Paragraph className="my-4">{children}</Paragraph>
           ),
-          a: ({children, ...props}: PropsWithChildren<{href: string}>) => (
-            <Link passHref {...props} prefetch={false}>
-              <a
-                target={props.href.startsWith(`/`) ? '_self' : '_blank'}
-                rel={props.href.startsWith(`/`) ? '' : 'noopener noreferrer'}
+          a: ({
+            children,
+            href,
+            ...props
+          }: PropsWithChildren<{href?: LinkProps['href']}>) =>
+            href ? (
+              <Link
+                {...props}
+                href={href}
+                prefetch={false}
+                target={
+                  typeof href === 'string'
+                    ? href.startsWith(`/`)
+                      ? '_self'
+                      : '_blank'
+                    : '_self'
+                }
+                rel={
+                  typeof href === 'string'
+                    ? href.startsWith(`/`)
+                      ? ''
+                      : 'noopener noreferrer'
+                    : undefined
+                }
                 className="text-emerald-500 hover:underline"
               >
                 {children}
-              </a>
-            </Link>
-          ),
+              </Link>
+            ) : null,
           pre: ({children}: PropsWithChildren<any>) => (
             <SyntaxHighlighter
               showLineNumbers
@@ -165,17 +176,13 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
           img: ({src, alt, width, height, caption}: any) => (
             <ImageWithCaption
               imageWrapperClassName="-mx-4 md:mx-0 md:rounded-md overflow-hidden"
-              src={src.replace(
-                /https:\/\/res\.cloudinary\.com\/dtfzsgeku\/image\/upload\/v\d+/i,
-                ``,
-              )}
+              src={src}
               alt={alt}
               width={width || 1000}
               height={height || 200}
-              layout="responsive"
-              objectFit="cover"
               sizes="(max-width: 576px) 576px, (max-width: 640px) 828px, 828px"
               caption={caption}
+              className="object-cover"
             />
           ),
         }}

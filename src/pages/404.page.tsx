@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import Heading from '../components/heading'
-import Layout from '../components/layout'
-import Paragraph from '../components/paragraph'
-import contentfulClient from '../lib/contentful-client'
+import Heading from '@/components/heading'
+import Layout from '@/components/layout'
+import Paragraph from '@/components/paragraph'
+import contentfulClient from '@/lib/contentful-client'
 import type {
   ConfigurationModel,
   ConvertedConfiguration,
-} from '../types/configuration.types'
+} from '@/types/configuration.types'
+import Link from 'next/link'
 
 export type NotFoundPageProps = {
   /**
@@ -29,14 +29,15 @@ export default function NotFound({siteConfiguration}: NotFoundPageProps) {
       className="grid gap-2"
     >
       <Heading variant="h2" component="h1">
-        A keresett oldal nem található
+        Page not found
       </Heading>
-      <Paragraph>Biztosan ezt az oldalt kerested? </Paragraph>
+      <Paragraph>Are you sure you&apos;re in the right place?</Paragraph>
 
-      <Link href="/">
-        <a className="text-emerald-500 hover:text-emerald-600 active:text-emerald-700 hover:underline focus-visible:underline focus-visible:outline-none ">
-          Vissza a főoldalra
-        </a>
+      <Link
+        href="/"
+        className="text-emerald-500 hover:text-emerald-600 active:text-emerald-700 hover:underline focus-visible:underline focus-visible:outline-none"
+      >
+        Go back to the homepage
       </Link>
     </Layout>
   )

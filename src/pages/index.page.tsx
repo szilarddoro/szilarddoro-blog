@@ -1,19 +1,19 @@
-import clsx from 'clsx'
-import Image from 'next/image'
-import Link from 'next/link'
-import ArticleInfo from '../components/article-info'
-import Heading, {defaultStyleMap} from '../components/heading'
-import Layout from '../components/layout'
-import Paragraph from '../components/paragraph'
-import contentfulClient from '../lib/contentful-client'
-import convertPost from '../lib/convert-post'
-import getAuthorWithRelativeImage from '../lib/get-author-with-relative-image'
-import type {AuthorModel, ConvertedAuthor} from '../types/author.types'
+import ArticleInfo from '@/components/article-info'
+import Heading, {defaultStyleMap} from '@/components/heading'
+import Layout from '@/components/layout'
+import Paragraph from '@/components/paragraph'
+import contentfulClient from '@/lib/contentful-client'
+import convertPost from '@/lib/convert-post'
+import getAuthorWithRelativeImage from '@/lib/get-author-with-relative-image'
+import type {AuthorModel, ConvertedAuthor} from '@/types/author.types'
 import type {
   ConfigurationModel,
   ConvertedConfiguration,
-} from '../types/configuration.types'
-import type {ConvertedPostCollection, PostModel} from '../types/post.types'
+} from '@/types/configuration.types'
+import type {ConvertedPostCollection, PostModel} from '@/types/post.types'
+import Image from 'next/image'
+import Link from 'next/link'
+import {twMerge} from 'tailwind-merge'
 
 export type HomePageProps = {
   /**
@@ -69,10 +69,8 @@ export default function Home({
             }
             width={52}
             height={52}
-            className="rounded-full"
-            layout="fixed"
+            className="rounded-full object-cover"
             priority
-            objectFit="cover"
             quality={100}
           />
 
@@ -87,46 +85,46 @@ export default function Home({
 
       <div className="grid gap-6 mt-2">
         {(!blogPosts || !blogPosts.items) && (
-          <span>Sajnos egyelőre még egy poszt sem került fel az oldalra.</span>
+          <span>There are no blog posts yet.</span>
         )}
 
         {blogPosts &&
           blogPosts.items.map(post => (
             <section key={post.sys.id}>
-              <Link href={`/${post.fields.slug}/`} passHref prefetch={false}>
-                <a
-                  className={clsx(
-                    'group text-gray-900 dark:text-white',
+              <Link
+                href={`/${post.fields.slug}/`}
+                prefetch={false}
+                className={twMerge(
+                  'group text-gray-900 dark:text-white',
+                  'text-opacity-80 dark:text-opacity-80',
+                  'hover:text-opacity-95 dark:hover:text-opacity-95',
+                  'active:text-opacity-100 dark:active:text-opacity-100',
+                  'focus-visible:text-opacity-100 dark:focus-visible:text-opacity-100 focus-visible:outline-none',
+                  'motion-safe:transition-all motion-safe:duration-200',
+                )}
+              >
+                <Heading
+                  variant="h2"
+                  styleMap={{
+                    ...defaultStyleMap,
+                    h2: `text-3xl font-semibold font-heading leading-snug my-2 group-focus-visible:underline dark:group-focus-visible:underline`,
+                  }}
+                >
+                  {post.fields.title}
+                </Heading>
+
+                <Paragraph
+                  className={twMerge(
+                    'text-gray-900 dark:text-white',
                     'text-opacity-80 dark:text-opacity-80',
-                    'hover:text-opacity-95 dark:hover:text-opacity-95',
-                    'active:text-opacity-100 dark:active:text-opacity-100',
-                    'focus-visible:text-opacity-100 dark:focus-visible:text-opacity-100 focus-visible:outline-none',
+                    'group-hover:text-opacity-95 dark:group-hover:text-opacity-95',
+                    'group-active:text-opacity-100 dark:group-active:text-opacity-100',
+                    'group-focus-visible:text-opacity-100 dark:group-focus-visible:text-opacity-100',
                     'motion-safe:transition-all motion-safe:duration-200',
                   )}
                 >
-                  <Heading
-                    variant="h2"
-                    styleMap={{
-                      ...defaultStyleMap,
-                      h2: `text-3xl font-semibold font-heading leading-snug my-2 group-focus-visible:underline dark:group-focus-visible:underline`,
-                    }}
-                  >
-                    {post.fields.title}
-                  </Heading>
-
-                  <Paragraph
-                    className={clsx(
-                      'text-gray-900 dark:text-white',
-                      'text-opacity-80 dark:text-opacity-80',
-                      'group-hover:text-opacity-95 dark:group-hover:text-opacity-95',
-                      'group-active:text-opacity-100 dark:group-active:text-opacity-100',
-                      'group-focus-visible:text-opacity-100 dark:group-focus-visible:text-opacity-100',
-                      'motion-safe:transition-all motion-safe:duration-200',
-                    )}
-                  >
-                    {post.fields.description}
-                  </Paragraph>
-                </a>
+                  {post.fields.description}
+                </Paragraph>
               </Link>
 
               <ArticleInfo className="mt-2" post={post} hideAuthor />

@@ -1,4 +1,4 @@
-import {CloudinaryImageModel} from '../../types/image.types'
+import {CloudinaryImageModel} from '@/types/image.types'
 
 /**
  * Transforms a Cloudinary image model into a model with relative URL.
@@ -9,9 +9,6 @@ import {CloudinaryImageModel} from '../../types/image.types'
 export default function imageWithRelativeUrl(image: CloudinaryImageModel) {
   return {
     ...image,
-    relative_url: image.secure_url?.replace(
-      /https:\/\/res\.cloudinary\.com\/dtfzsgeku\/image\/upload\/v\d+/i,
-      ``,
-    ),
+    relative_url: image.secure_url,
   }
 }

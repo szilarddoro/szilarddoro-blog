@@ -1,18 +1,18 @@
+import contentfulClient from '@/lib/contentful-client'
+import getAuthorWithRelativeImage from '@/lib/get-author-with-relative-image'
+import imageWithRelativeUrl from '@/lib/image-with-relative-url'
+import type {ConvertedAuthor} from '@/types/author.types'
+import type {ConvertedPost, PostModel} from '@/types/post.types'
 import type {Entry} from 'contentful'
 import {serialize} from 'next-mdx-remote/serialize'
-import type {ConvertedAuthor} from '../../types/author.types'
-import type {ConvertedPost, PostModel} from '../../types/post.types'
-import contentfulClient from '../contentful-client'
-import getAuthorWithRelativeImage from '../get-author-with-relative-image'
-import imageWithRelativeUrl from '../image-with-relative-url'
 
 export default async function convertPost(post: Entry<PostModel>) {
   const mappedTags = await Promise.all(
-    post.metadata.tags.map(tag => contentfulClient.getTag(tag.sys.id)),
+    post.metadata?.tags.map(tag => contentfulClient.getTag(tag.sys.id)),
   )
   const mappedAuthor = {
     ...(post.fields.author as unknown as ConvertedAuthor),
-    fields: getAuthorWithRelativeImage(post.fields.author.fields),
+    fields: getAuthorWithRelativeImage(post.fields.author?.fields),
   }
   const mappedHeroImage = post.fields.heroImage
     ? imageWithRelativeUrl(post.fields.heroImage[0])

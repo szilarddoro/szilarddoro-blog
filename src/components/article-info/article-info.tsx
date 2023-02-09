@@ -1,8 +1,8 @@
-import clsx from 'clsx'
+import type {ConvertedPost} from '@/types/post.types'
 import Image from 'next/image'
 import Link from 'next/link'
 import type {DetailedHTMLProps, HTMLProps} from 'react'
-import type {ConvertedPost} from '../../types/post.types'
+import {twMerge} from 'tailwind-merge'
 
 export type ArticleInfoProps<TBody> = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
@@ -31,7 +31,7 @@ export default function ArticleInfo<TBody>({
 }: ArticleInfoProps<TBody>) {
   return (
     <div
-      className={clsx(
+      className={twMerge(
         'grid grid-flow-col place-content-start items-center',
         'text-base text-gray-700 dark:text-white dark:text-opacity-70',
         className,
@@ -52,7 +52,6 @@ export default function ArticleInfo<TBody>({
               width={32}
               height={32}
               className="rounded-full"
-              layout="fixed"
               priority
             />
 
@@ -79,7 +78,7 @@ export default function ArticleInfo<TBody>({
             {post.fields.readingTime >= 10 && (
               <span className="mr-0.5">☕☕☕</span>
             )}
-            <span>{post.fields.readingTime} perc</span>
+            <span>{post.fields.readingTime} min</span>
           </div>
 
           <span> · </span>
@@ -88,16 +87,14 @@ export default function ArticleInfo<TBody>({
             {post.fields.tags.map(tag => (
               <Link
                 href={`/categories/${tag.sys.id}`}
-                passHref
                 key={tag.sys.id}
                 prefetch={false}
+                className="flex flex-wrap items-center group focus:outline-none"
               >
-                <a className="flex flex-wrap items-center group focus:outline-none">
-                  <span className="text-xs inline-block mr-0.5">🔗</span>
-                  <span className="group-hover:underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 group-focus-visible:underline motion-safe:transition-colors ml-0.5">
-                    {tag.name}
-                  </span>
-                </a>
+                <span className="text-xs inline-block mr-0.5">🔗</span>
+                <span className="group-hover:underline group-hover:text-emerald-500 group-active:text-emerald-600 group-focus-within:text-emerald-500 group-focus-visible:underline motion-safe:transition-colors ml-0.5">
+                  {tag.name}
+                </span>
               </Link>
             ))}
           </div>

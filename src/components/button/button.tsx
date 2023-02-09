@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import {DetailedHTMLProps, HTMLProps} from 'react'
+import {twMerge} from 'tailwind-merge'
 
 export type ButtonProps = DetailedHTMLProps<
   HTMLProps<HTMLButtonElement>,
@@ -15,7 +15,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   return (
-    <button className={clsx(className)} {...props}>
+    <button className={twMerge(className)} {...props}>
       {children}
     </button>
   )

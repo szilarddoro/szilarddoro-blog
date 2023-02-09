@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import {DetailedHTMLProps, HTMLProps} from 'react'
+import {twMerge} from 'tailwind-merge'
 
 export type ParagraphProps = DetailedHTMLProps<
   HTMLProps<HTMLParagraphElement>,
@@ -12,7 +12,7 @@ export default function Paragraph({
   ...props
 }: ParagraphProps) {
   return (
-    <p className={clsx(`leading-relaxed`, className)} {...props}>
+    <p className={twMerge(`leading-relaxed`, className)} {...props}>
       {children}
     </p>
   )

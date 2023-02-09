@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import Image, {ImageProps} from 'next/image'
+import {twMerge} from 'tailwind-merge'
 
 export type ImageWithCaptionProps = ImageProps & {
   /**
@@ -30,14 +30,14 @@ export default function ImageWithCaption({
   ...props
 }: ImageWithCaptionProps) {
   return (
-    <div className={clsx(`grid gap-2`, wrapperClassName)}>
+    <div className={twMerge(`grid gap-2`, wrapperClassName)}>
       <div className={imageWrapperClassName}>
         <Image src={src} alt={alt} {...props} />
       </div>
 
       {caption && (
         <figcaption
-          className={clsx(
+          className={twMerge(
             `text-xs text-gray-500 dark:text-gray-300 justify-self-center`,
             captionClassName,
           )}

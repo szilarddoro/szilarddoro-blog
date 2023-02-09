@@ -1,5 +1,5 @@
-import clsx from 'clsx'
 import {createElement, DetailedHTMLProps, HTMLProps} from 'react'
+import {twMerge} from 'tailwind-merge'
 
 export type ContainerProps = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
@@ -20,7 +20,7 @@ export default function Container({
   return createElement(
     component,
     {
-      className: clsx(`container max-w-4xl mx-auto px-4 md:px-6`, className),
+      className: twMerge(`container max-w-2xl mx-auto px-4 md:px-6`, className),
       ...props,
     },
     children,

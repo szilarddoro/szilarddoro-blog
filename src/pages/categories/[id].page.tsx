@@ -1,17 +1,17 @@
-import type {Tag} from 'contentful'
-import type {GetStaticPropsContext} from 'next'
-import Link from 'next/link'
-import ArticleInfo from '../../components/article-info'
-import Heading, {defaultStyleMap} from '../../components/heading'
-import Layout from '../../components/layout'
-import Paragraph from '../../components/paragraph'
-import contentfulClient from '../../lib/contentful-client'
-import convertPost from '../../lib/convert-post'
+import ArticleInfo from '@/components/article-info'
+import Heading, {defaultStyleMap} from '@/components/heading'
+import Layout from '@/components/layout'
+import Paragraph from '@/components/paragraph'
+import contentfulClient from '@/lib/contentful-client'
+import convertPost from '@/lib/convert-post'
 import {
   ConfigurationModel,
   ConvertedConfiguration,
-} from '../../types/configuration.types'
-import type {ConvertedPostCollection, PostModel} from '../../types/post.types'
+} from '@/types/configuration.types'
+import type {ConvertedPostCollection, PostModel} from '@/types/post.types'
+import type {Tag} from 'contentful'
+import type {GetStaticPropsContext} from 'next'
+import Link from 'next/link'
 
 export type CategoryListPageProps = {
   /**
@@ -80,22 +80,24 @@ export default function CategoryList({
       <div className="grid gap-6 mt-4">
         {blogPosts.items.map(post => (
           <section key={post.sys.id}>
-            <Link href={`/${post.fields.slug}/`} passHref prefetch={false}>
-              <a className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none">
-                <Heading
-                  variant="h2"
-                  styleMap={{
-                    ...defaultStyleMap,
-                    h2: `text-3xl font-semibold font-heading leading-snug my-2`,
-                  }}
-                >
-                  {post.fields.title}
-                </Heading>
+            <Link
+              href={`/${post.fields.slug}/`}
+              prefetch={false}
+              className="text-gray-900 dark:text-white hover:text-emerald-500 active:text-emerald-600 motion-safe:transition-colors focus-visible:text-emerald-500 focus-visible:outline-none"
+            >
+              <Heading
+                variant="h2"
+                styleMap={{
+                  ...defaultStyleMap,
+                  h2: `text-3xl font-semibold font-heading leading-snug my-2`,
+                }}
+              >
+                {post.fields.title}
+              </Heading>
 
-                <Paragraph className="text-gray-900 dark:text-white">
-                  {post.fields.description}
-                </Paragraph>
-              </a>
+              <Paragraph className="text-gray-900 dark:text-white">
+                {post.fields.description}
+              </Paragraph>
             </Link>
 
             <ArticleInfo className="mt-2" post={post} hideAuthor />
