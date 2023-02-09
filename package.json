@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/bitter": "^4.5.11",
+    "@fontsource/merriweather": "^4.5.14",
     "@next/env": "^13.1.6",
-    "@next/font": "^13.1.6",
     "next": "^13.1.6",
     "next-mdx-remote": "^4.3.0",
     "next-seo": "^5.15.0",
