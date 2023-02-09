@@ -96,9 +96,8 @@ export default function Home({
                 prefetch={false}
                 className={twMerge(
                   'group text-gray-900 dark:text-white',
-                  'text-opacity-80 dark:text-opacity-80',
-                  'hover:text-opacity-95 dark:hover:text-opacity-95',
-                  'active:text-opacity-100 dark:active:text-opacity-100',
+                  'text-opacity-100 dark:text-opacity-100',
+                  'hover:text-opacity-70 dark:hover:text-opacity-70',
                   'focus-visible:text-opacity-100 dark:focus-visible:text-opacity-100 focus-visible:outline-none',
                   'motion-safe:transition-all motion-safe:duration-200',
                 )}
@@ -116,9 +115,8 @@ export default function Home({
                 <Paragraph
                   className={twMerge(
                     'text-gray-900 dark:text-white',
-                    'text-opacity-80 dark:text-opacity-80',
-                    'group-hover:text-opacity-95 dark:group-hover:text-opacity-95',
-                    'group-active:text-opacity-100 dark:group-active:text-opacity-100',
+                    'text-opacity-100 dark:text-opacity-100',
+                    'group-hover:text-opacity-80 dark:group-hover:text-opacity-80',
                     'group-focus-visible:text-opacity-100 dark:group-focus-visible:text-opacity-100',
                     'motion-safe:transition-all motion-safe:duration-200',
                   )}

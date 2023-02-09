@@ -1,3 +1,4 @@
+import {Merriweather} from '@next/font/google'
 import {createElement, DetailedHTMLProps, HTMLProps} from 'react'
 import {twMerge} from 'tailwind-merge'
 
@@ -36,6 +37,12 @@ export const defaultStyleMap: HeadingStyleMap = {
   h6: `text-base font-heading font-semibold`,
 }
 
+const merriweather = Merriweather({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-merriweather',
+})
+
 export default function Heading({
   component,
   variant = 'h1',
@@ -46,7 +53,10 @@ export default function Heading({
 }: HeadingProps) {
   return createElement(
     component || variant,
-    {className: twMerge(styleMap[variant], className), ...props},
+    {
+      className: twMerge(styleMap[variant], merriweather.className, className),
+      ...props,
+    },
     children,
   )
 }

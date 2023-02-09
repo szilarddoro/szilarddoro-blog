@@ -3,7 +3,6 @@ import Heading from '@/components/heading'
 import ImageWithCaption from '@/components/image-with-caption'
 import Layout from '@/components/layout'
 import Paragraph from '@/components/paragraph'
-import SyntaxHighlighter from '@/components/syntax-highlighter'
 import contentfulClient from '@/lib/contentful-client'
 import convertPost from '@/lib/convert-post'
 import convertTextToIdentifier from '@/lib/convert-text-to-identifier'
@@ -16,6 +15,8 @@ import type {GetStaticPropsContext} from 'next'
 import {MDXRemote} from 'next-mdx-remote'
 import Link, {LinkProps} from 'next/link'
 import type {PropsWithChildren} from 'react'
+import {PrismAsyncLight as CodeSnippet} from 'react-syntax-highlighter'
+import {nightOwl} from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
 export type PostPageProps = {
   /**
@@ -166,12 +167,13 @@ export default function Post({siteConfiguration, post, error}: PostPageProps) {
               </Link>
             ) : null,
           pre: ({children}: PropsWithChildren<any>) => (
-            <SyntaxHighlighter
-              showLineNumbers
+            // @ts-ignore
+            <CodeSnippet
+              style={nightOwl}
               language={children.props.className.replace(/language\-/i, '')}
             >
               {children.props.children}
-            </SyntaxHighlighter>
+            </CodeSnippet>
           ),
           img: ({src, alt, width, height, caption}: any) => (
             <ImageWithCaption

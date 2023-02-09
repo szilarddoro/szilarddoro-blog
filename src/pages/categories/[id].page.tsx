@@ -73,7 +73,7 @@ export default function CategoryList({
       <Heading variant="h4" component="h1" className="mb-4">
         🗂️{' '}
         <span className="inline-block ml-0.5 text-slate-700 dark:text-white dark:text-opacity-50">
-          Kategóriák / {tag.name}
+          Categories / {tag.name}
         </span>
       </Heading>
 

@@ -1,9 +1,16 @@
 import Container from '@/components/container'
 import Heading from '@/components/heading'
+import {Bitter} from '@next/font/google'
 import {NextSeo, NextSeoProps} from 'next-seo'
 import Link from 'next/link'
 import {DetailedHTMLProps, HTMLProps} from 'react'
 import {twMerge} from 'tailwind-merge'
+
+const bitter = Bitter({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-bitter',
+})
 
 export type LayoutProps = DetailedHTMLProps<
   HTMLProps<HTMLDivElement>,
@@ -40,7 +47,11 @@ export default function Layout({
 
   return (
     <div
-      className={twMerge(`relative min-h-screen pb-12`, wrapperClassName)}
+      className={twMerge(
+        `relative min-h-screen pb-12`,
+        bitter.className,
+        wrapperClassName,
+      )}
       {...props}
     >
       <NextSeo
